@@ -1,0 +1,19 @@
+# this is emergent_robot_launcher.service
+# written by Rasmus Munk
+# munk1@live.dk
+# copy to /lib/systemd/system
+# symlink is not enough, file must be copied there.
+# remember to reload the systemctl deamon after changeing this file
+# requires that either the emergent_robot binary itself or a symlink to it is placed in /usr/bin
+[Unit]
+Description=Launches the emergent_robot binary in /usr/bin. This service relies on the thymio-connection.service and p$
+After=thymio-connection.service pi-camera.service
+
+[Service]
+Type=simple
+RemainAfterExit=no
+WorkingDirectory=/var/emergent_robot
+ExecStart=/usr/bin/emergent_robot
+
+[Install]
+WantedBy=multi-user.target

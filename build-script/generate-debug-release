@@ -1,0 +1,20 @@
+#!/bin/sh
+## Generate debug executable
+DEBUG="../build/debug"
+RELEASE="../build/release"
+
+if [ ! -d "$DEBUG" ] ; then
+    mkdir -p "$DEBUG"
+fi
+
+if [ ! -d "$RELEASE" ] ; then
+    mkdir -p "$RELEASE"
+fi
+
+cd "$DEBUG"
+cmake -DCMAKE_BUILD_TYPE=Debug ../..
+make -j4
+## Generate release executable
+cd ../release
+cmake -DCMAKE_BUILD_TYPE=Release ../..
+make -j4

@@ -5,3 +5,9 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+bin/
+build/
+cmake-build-debug/
+cmake-build-release/
+.idea/
+DS_Store
