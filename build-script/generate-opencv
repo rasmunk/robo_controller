@@ -1,0 +1,11 @@
+#!/bin/sh
+RELEASE="build/release"
+
+if [ ! -d "$RELEASE" ] ; then
+    mkdir -p "$RELEASE"
+fi
+
+## Generate release executable
+cd "$RELEASE"
+cmake -DCMAKE_BUILD_TYPE=Release -OPENCV_EXTRA_MODULES_PATH=../../../opencv_contrib/modules/ ../..
+make -j4

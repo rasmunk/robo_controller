@@ -36,4 +36,4 @@ set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
 
 ## Create the executable "emergent_robot" while linking in the required library files
 add_executable(emergent_robot ${SOURCE_FILES})
-target_link_libraries(emergent_robot ${LIBS} lib_aseba_medulla_dbus)
+target_link_libraries(emergent_robot ${LIBS} lib_asebaclient)
