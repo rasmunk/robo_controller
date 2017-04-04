@@ -22,7 +22,7 @@ void RobotDetector::initialize(std::string reference_image_path) {
 bool RobotDetector::find(const cv::Mat &mat) {
     bool found = false;
     // Load in reference image
-    vector<KeyPoint> kpts2;
+    /*vector<KeyPoint> kpts2;
     Mat mat_gray, desc2, homography;
     BFMatcher matcher(NORM_HAMMING);
     cvtColor(mat, mat_gray, CV_BGR2GRAY);
@@ -87,11 +87,11 @@ bool RobotDetector::find(const cv::Mat &mat) {
                     if (res.cols > 0) {
                         resize(res, res, Size(1024, 768));
                         imshow("res", res);
-                    } */
+                    }
                 }
             }
         }
-    }
+    }*/
     return found;
 }
 

@@ -1,4 +1,4 @@
-Emergent Controller
+# Emergent Controller
 
 Dependencies
 - OpenCV 3.2
@@ -8,4 +8,4 @@ Dependencies
 
 - asebaclient, https://github.com/rasmunk/asebaclient
 
-# Also needs access to a camera, can be setup through the boot-pi-camera.service
+Also needs access to a camera, can be setup through the boot-pi-camera.service

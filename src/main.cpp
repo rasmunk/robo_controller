@@ -16,7 +16,7 @@ int main(int argc, char** argv )
     RobotControllerFactory robot_controller_factory;
     shared_ptr<FrameStructure> shared_frame = make_shared<SharedFrame>();
     auto shared_detector = shared_ptr<Detector>(move(dec_factory.make_detector(Robot)));
-    shared_detector->initialize("/etc/emergent_robot/full_thymio_cropped.jpg");
+    shared_detector->initialize("emergent_controller/object.jpg");
     // Controller is spawned off into it's own thread
     auto robot_controller = robot_controller_factory.make_shared_robot_controller(Thymio);
     robot_controller->set_shared_detector(shared_detector);
