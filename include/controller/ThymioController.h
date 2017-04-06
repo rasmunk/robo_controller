@@ -5,7 +5,7 @@
 #ifndef EMERGENT_ROBOT_THYMIOCONTROLLER_H
 #define EMERGENT_ROBOT_THYMIOCONTROLLER_H
 #include <include/controller/RobotController.h>
-#include <aseba/include/dbusinterface.h>
+#include <asebaclient/dbusinterface.h>
 #include <thread>
 #include <atomic>
 
@@ -23,6 +23,7 @@ private:
     void callback_avoid(const Values& event_values); // Callback function for the thymio -> has seen an obstacle
     void callback_clear(const Values& event_values); // sees nothing -> passes the current speed
     void callback_falling(const Values& event_values); // about to fall
+    void callback_keepalive(const Values& event_values); // Used to indicate to the robot that it should keep on running
 
 public:
     ThymioController() {};

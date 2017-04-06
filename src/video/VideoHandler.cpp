@@ -42,10 +42,10 @@ bool VideoHandler::initialise()
     }
     if (frame.empty())
     {
-        cerr << "A blank frame was returned from the camera";
+        cerr << "A blank frame was returned from the camera" << "\n";
         result = false;
     }
-
+    cout << "Camera Initialized" << "\n";
     // setup writer
    /* int codec = CV_FOURCC('M','J','P','G');
     double fps = 25.0;

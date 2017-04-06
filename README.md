@@ -8,4 +8,4 @@ Dependencies
 
 - asebaclient, https://github.com/rasmunk/asebaclient
 
-Also needs access to a camera, can be setup through the boot-pi-camera.service
+Also upon execution if the videotracking flag is set the application requires access to a camera device
