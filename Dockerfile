@@ -32,7 +32,7 @@ RUN cd /opt \
 ## Emergent Controller
 ## Setup Required OpenCV Modules
 RUN cd /opt \
-    && git clone -b trimopencv --single-branch https://github.com/rasmunk/emergent_controller.git \
+    && git clone https://github.com/rasmunk/emergent_controller.git \
     && git clone https://github.com/opencv/opencv.git \
     && git clone https://github.com/opencv/opencv_contrib.git \
     && chmod +x /opt/emergent_controller/build-script/* \
