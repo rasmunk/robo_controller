@@ -97,7 +97,7 @@ void ThymioController::callback_falling(const Values& event_values)
         }
     }
 
-    // If less than 800 for this particular sensor it's a good indicator that the surface is reflective.
+    // If around 800 for this particular sensor it's a good indicator that the surface is reflective.
     // e.g. a table of white paper
     // black carpet = 70
     if (min_prox_distance < 40)
@@ -106,8 +106,7 @@ void ThymioController::callback_falling(const Values& event_values)
     }
 }
 
-// Robot sees nothing -> sends it current speed on both motors
-// if they are normal values -> do nothing -> else reset to normal -> forward
+// Keep Running -> resets the internal counter for whether the robot should keep on moving.
 void ThymioController::callback_keepalive(const Values& event_values)
 {
     _thymio_interface->sendEventName("KeepAlive", Values({}));
