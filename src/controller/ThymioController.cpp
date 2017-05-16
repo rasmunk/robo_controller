@@ -44,7 +44,7 @@ void ThymioController::flocking()
     _core_application = make_unique<QCoreApplication>(argc,argv);
     _thymio_interface = make_unique<Aseba::DBusInterface>();
     cout << "Loading Aesl Script onto the robot" << "\n";
-    _thymio_interface->loadScript("/etc/emergent_robot/ScriptDBusThymio.aesl");
+    _thymio_interface->loadScript("emergent_controller/res/config/BasicThymio.aesl");
     cout << "Configuring normalspeed and connect events" << "\n";
     _thymio_interface->setVariable("thymio-II", "normal_speed", Values({normal_speed}));
     _thymio_interface->sendEventName("MoveNormally", Values({})); // Sets the robots speed to normal_speed
