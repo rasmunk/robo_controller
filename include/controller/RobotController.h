@@ -12,7 +12,7 @@ class RobotController {
 public:
     virtual void start() = 0;
     virtual void stop() = 0;
-    virtual void set_shared_detector(std::shared_ptr<Detector>) = 0;
+    //virtual void set_shared_detector(std::shared_ptr<Detector>) = 0;
 
 };
 

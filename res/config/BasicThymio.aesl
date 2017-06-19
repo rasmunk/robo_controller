@@ -20,7 +20,7 @@
 
 
 <!--node thymio-II-->
-<node nodeId="59696" name="thymio-II">
+<node nodeId="1" name="thymio-II">
     var keepalive_timer ## Variable used to indicate how long the robot should keep running before an event is triggered
     var prox_pivot_value = 5000 ## Used to indicate the pivot value between being close or far from the robot
     var rotational_speed = 100 ## Aspeed assigned when a robot has to rotate
