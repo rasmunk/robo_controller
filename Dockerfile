@@ -6,7 +6,7 @@ RUN update=1; while test $update -ne 0; do apt-get update --fix-missing; update=
     g++ \
     git \
     make \
-    libqt4-core \
+    libqtcore4 \
     libqt4-dbus \
     libqt4-test \
     libqt4-dev \
