@@ -2,37 +2,59 @@
 // Created by Rasmus Munk on 18/06/2017.
 //
 #include <include/controller/ThymioOAController.h>
+#include <include/robot/Thymio.h>
 
 using namespace std;
 using namespace std::placeholders;
-void ThymioOAController::start() {
-    _runner = thread(&ThymioOAController::obstacle_avoidance, this);
+
+ThymioOAController::ThymioOAController() {
+    _thymio_interface->loadScript("OAThymio.aesl");
+    _thymio_interface->connectEvent("ObstacleDetected", bind(&ThymioOAController::callback_avoid, this, _1));
+    _thymio_interface->connectEvent("Falling", bind(&ThymioOAController::callback_falling, this, _1));
+    _thymio_interface->connectEvent("Clear", bind(&ThymioOAController::callback_clear, this, _1));
+    _thymio_interface->connectEvent("Stop", bind(&ThymioController::callback_keepalive, this, _1));
+    _thymio_interface->setVariable("thymio-II", "normal_speed", Values({Thymio::normal_speed}));
+    _thymio_interface->sendEventName("MoveNormally", Values({}));
 }
 
-void ThymioOAController::obstacle_avoidance() {
-    cout << "Starting Obstacle Avoidance" << endl;
-    // Instantiate state after state has been copied by the thread function
-    char** argv;
-    int argc;
-    _core_application = make_unique<QCoreApplication>(argc,argv);
-    _thymio_interface = make_unique<Aseba::DBusInterface>();
-    cout << "Loading Aesl Script onto the robot" << "\n";
-    _thymio_interface->loadScript("/etc/emergent_robot/ScriptDBusThymio.aesl");
-    cout << "Configuring normalspeed and connect events" << "\n";
-    _thymio_interface->setVariable("thymio-II", "normal_speed", Values({normal_speed}));
-    _thymio_interface->sendEventName("MoveNormally", Values({})); // Sets the robots speed to normal_speed
-    _thymio_interface->connectEvent("ObstacleDetected", bind(&ThymioController::callback_avoid, this, _1));
-    _thymio_interface->connectEvent("Falling", bind(&ThymioController::callback_falling, this, _1));
-    _thymio_interface->connectEvent("Clear", bind(&ThymioController::callback_clear, this, _1));
-    _thymio_interface->connectEvent("Stop", bind(&ThymioController::callback_keepalive, this, _1));
+void ThymioOAController::callback_avoid(const Values& event_values)
+{
+    // If detected -> average location, seperation and alignment
+    cout << "Thymio encountered an obstacle: " << Aseba::DBusInterface::toString(event_values) << endl;
+    _thymio_interface->sendEventName("Rotate", Values({}));
+}
 
-    while((*_keep_running).test_and_set())
+// Robot sees nothing -> sends it current speed on both motors
+// if they are normal values -> do nothing -> else reset to normal -> forward
+void ThymioOAController::callback_clear(const Values& event_values)
+{
+    cout << "Thymio sees nothing: " << Aseba::DBusInterface::toString(event_values) << endl;
+    qint16 current_left_speed = event_values[0];
+    qint16 current_right_speed = event_values[1];
+    if (current_left_speed != Thymio::normal_speed or current_right_speed != Thymio::normal_speed)
     {
-        //cout << "Running" << "\n";
-        // Wait for new events -> process them when they are registered
-        _core_application->processEvents(QEventLoop::WaitForMoreEvents | QEventLoop::EventLoopExec);
+        cout << "Firing reset speed" << "\n";
+        _thymio_interface->sendEventName("MoveNormally", Values({}));
     }
-    cout << "Stopping the thymio" << "\n";
-    _thymio_interface->sendEventName("Stop", Values({}));
-    cout << "Finished Obstacle avoidance" << endl;
+}
+
+void ThymioOAController::callback_falling(const Values& event_values)
+{
+    cout << "Falling: " << Aseba::DBusInterface::toString(event_values) << endl;
+    qint16 min_prox_distance = 2000;
+    for (size_t i = 0; i < event_values.size(); ++i)
+    {
+        if (event_values[i] < min_prox_distance)
+        {
+            min_prox_distance = event_values[i];
+        }
+    }
+
+    // If less than 800 for this particular sensor it's a good indicator that the surface is reflective.
+    // e.g. a table of white paper
+    // black carpet = 70
+    if (min_prox_distance < 40)
+    {
+        _thymio_interface->sendEventName("Rotate", Values({}));
+    }
 }

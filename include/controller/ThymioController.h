@@ -6,8 +6,10 @@
 #define EMERGENT_ROBOT_THYMIOCONTROLLER_H
 #include <include/controller/RobotController.h>
 #include <asebaclient/dbusinterface.h>
+#include <include/detector/Detector.h>
 #include <thread>
 #include <atomic>
+#include <include/configuration/AsebaRobotConfiguration.h>
 
 
 class ThymioController : public RobotController {
@@ -17,19 +19,20 @@ protected:
     std::shared_ptr<Detector> _shared_detector;
     std::unique_ptr<Aseba::DBusInterface> _thymio_interface;
     std::unique_ptr<QCoreApplication> _core_application;
-    const qint16 normal_speed = 300;
+
     void quit();
 
+    // TODO -> implement default copy and move operations
 public:
-    ThymioController() {};
+    ThymioController();
     ~ThymioController() { this->quit(); };
     void start() override;
     void stop() override;
-    void callback_avoid(const Values& event_values); // Callback function for the thymio -> has seen an obstacle
-    void callback_clear(const Values& event_values); // sees nothing -> passes the current speed
-    void callback_falling(const Values& event_values); // about to fall
     void callback_keepalive(const Values& event_values); // Used to indicate to the robot that it should keep on running
     void set_shared_detector(std::shared_ptr<Detector>);
+
+private:
+    void process_events();
  };
 
 #endif //EMERGENT_ROBOT_THYMIOCONTROLLER_H

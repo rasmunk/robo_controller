@@ -1,64 +1,24 @@
 <!DOCTYPE aesl-source>
 <network>
 
-
 <!--list of global events-->
 <event size="0" name="Stop"/>
-<event size="0" name="MoveNormally"/>
-<event size="0" name="Rotate"/>
-<event size="2" name="Falling"/>
-<event size="2" name="Clear"/>
+<event size="0" name="Start"/>
+<event size="2" name="SetSpeed"/>
 <event size="7" name="ObstacleDetected"/>
 <event size="0" name="KeepAlive"/>
 
-
 <!--list of constants-->
-
 
 <!--show keywords state-->
 <keywords flag="true"/>
 
-
 <!--node thymio-II-->
 <node nodeId="1" name="thymio-II">
     var keepalive_timer ## Variable used to indicate how long the robot should keep running before an event is triggered
-    var prox_pivot_value = 5000 ## Used to indicate the pivot value between being close or far from the robot
-    var rotational_speed = 100 ## Aspeed assigned when a robot has to rotate
-    var normal_speed ## Maximum speed
-    var rand_storage ## Variable used to store the random number of the math.rand(rand_storage) function
-    var edge_counter = 0 ## edge counter, used to track how long the robot should turn when it is at an edge
 
 	onevent prox
-		## Object is running of the edge
-		if ((prox.ground.reflected[0] &lt; 800) or (prox.ground.reflected[1] &lt; 800)) then
-			emit Falling prox.ground.reflected
-		end
-
-		## Object is far infront of the robot
-        if (((prox.horizontal[3] &lt;= prox_pivot_value and prox.horizontal[2] != 0)
-        		and (prox.horizontal[1] &lt;= prox_pivot_value and prox.horizontal[2] != 0 ))
-        		or (prox.horizontal[2] &lt;= prox_pivot_value and prox.horizontal[2] != 0)) then
-        		emit ObstacleDetected prox.horizontal
-        end
-
-        ## Object on the right side
-        if (prox.horizontal[4] > 0 and (prox.horizontal[3] == 0 or prox.horizontal[3] > 0) and
-        	prox.horizontal[2] == 0 and prox.horizontal[1] == 0) then
-        		emit ObstacleDetected prox.horizontal
-        end
-
-        ## Object on the left side
-        if (prox.horizontal[4] == 0 and prox.horizontal[3] == 0 and (prox.horizontal[1] == 0 or prox.horizontal[1] > 0) and prox.horizontal[0] > 0) then
-        	emit ObstacleDetected prox.horizontal
-        end
-
-        ## See nothing
-        if (prox.horizontal[6] == 0 and prox.horizontal[5] == 0 and prox.horizontal[4] == 0
-        	and prox.horizontal[3] == 0 and prox.horizontal[2] == 0 and prox.horizontal[1] == 0
-        	and prox.horizontal[0] == 0) then
-        	emit Clear [motor.left.target, motor.right.target]
-        end
-
+	    emit ObstacleDetected prox.horizontal
 
     ## When the timer has run out, stop the robot
     onevent timer0
@@ -71,57 +31,15 @@
     	motor.right.target = 0
     	call leds.circle(0,0,0,0,0,0,0,0)
 
-
-    onevent Rotate
-        emit KeepAlive
-        callsub backwards_n_turn
-
-	onevent MoveNormally
+	onevent Start
 	    emit KeepAlive
-	    motor.left.target = normal_speed
-	    motor.right.target = normal_speed
 
     ## When KeepAlive is triggered it resets the timer that validates whether the robot should keep on moving
 	onevent KeepAlive
         timer.period[0] = keepalive_timer
 
-## Sub Methods ##
-	## Rotate towards the left
-    sub leftside
-    	motor.left.target = (-normal_speed + (-rotational_speed))
-    	motor.right.target = normal_speed + rotational_speed
-
-    ## Rotate towards the right
-    sub rightside
-    	motor.right.target = (-normal_speed + (-rotational_speed))
-    	motor.left.target = normal_speed + rotational_speed
-    	call leds.top(0,0,100)
-
-    ## Drive backwards and then turn around to either right or left for a random amount of iterations (between 0 and 32767)
-    ## https://www.thymio.org/en:asebastdnative
-	sub backwards_n_turn
-		callsub backwards
-		call math.rand(rand_storage)
-		edge_counter = 0
-		while edge_counter &lt; 20000 do
-			edge_counter = edge_counter + 1
-		end
-		call math.rand(rand_storage)
-		edge_counter = 0
-		if rand_storage > 0 then
-			callsub leftside
-		else
-			callsub rightside
-		end
-		while edge_counter &lt; abs(rand_storage) do
-			edge_counter = edge_counter + 1
-		end
-		emit Clear [motor.left.target, motor.right.target]
-
-	sub backwards
-		motor.left.target = -normal_speed
-		motor.right.target = -normal_speed
-
+    ## Sub Methods ##
+    ## Clear all lights
     sub clear_lights
         call leds.bottom.left(0,0,0)
         call leds.bottom.right(0,0,0)
@@ -134,6 +52,4 @@
         call leds.temperature(0,0)
         call leds.top(0,0,0)
 	</node>
-
-
 </network>

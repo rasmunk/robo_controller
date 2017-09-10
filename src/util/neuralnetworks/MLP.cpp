@@ -36,8 +36,6 @@ MLP::MLP(std::vector<double>& weights,
 	// ...
 }
 
-
-
 MLP::MLP(MLP const& other) : LayeredNeuralNetwork(other) {
 	// ...
 }
@@ -46,11 +44,9 @@ MLP::~MLP() {
 	// ...
 }
 
-
 std::string MLP::toString() const {
 	return LayeredNeuralNetwork::toString();
 }
-
 
 void MLP::step() {
 
@@ -98,7 +94,6 @@ void MLP::step() {
 	_outputs = tmp;
 }
 
-
 unsigned int MLP::computeRequiredNumberOfWeights() {
 	unsigned int res = 0;
 	unsigned int nbBiais = 0;
@@ -117,7 +112,6 @@ unsigned int MLP::computeRequiredNumberOfWeights() {
 		return res;
 	}
 }
-
 
 std::string MLP::getNNTypeName() {
 	return "MLP";

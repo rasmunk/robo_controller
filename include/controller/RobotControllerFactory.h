@@ -6,7 +6,7 @@
 #include <memory>
 #include <include/controller/RobotController.h>
 
-enum Controller_type {Thymio,Emergent};
+enum Controller_type {ThymioBasic, ThymioEmergent, ThymioObstacleAvoidance};
 class RobotControllerFactory {
 public:
     std::unique_ptr<RobotController> make_unique_robot_controller(Controller_type);

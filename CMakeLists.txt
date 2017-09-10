@@ -3,6 +3,9 @@ set(PROJECT_NAME )
 project(emergent_controller)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
+# Cmake find modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_ext")
+
 ## Include project source code
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 ## Set the OpenCV HomeDir and library files
@@ -17,14 +20,46 @@ set(LIBS ${LIBS} ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES})
 ## Contains every qt core module include headers e.g QtDBus
 include_directories(${QT_INCLUDE_DIR})
 
-## Setup project source files
+#Protobufs
+find_package(Protobuf REQUIRED)
+find_package(GRPC REQUIRED)
 
-set(SOURCE_FILES ${SOURCE_FILES} include/controller/RobotControllerFactory.h)
+set(PROTOS
+        ${CMAKE_CURRENT_SOURCE_DIR}/res/proto/simulation.proto
+)
+
+set(PROTO_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/proto-src)
+file(MAKE_DIRECTORY ${PROTO_SRC_DIR})
+include_directories(${PROTO_SRC_DIR})
+protobuf_generate_cpp(PROTO_SRCS
+        PROTO_HDRS
+        ${PROTO_SRC_DIR}
+        ${PROTOS}
+)
+
+grpc_generate_cpp(GRPC_SRCS
+        GRPC_HDRS
+        ${PROTO_SRC_DIR}
+        ${PROTOS}
+)
+
+## Setup project source files
+set(SOURCE_FILES ${SOURCE_FILES} include/configuration/RobotConfiguration.h)
+#set(SOURCE_FILES ${SOURCE_FILES} include/configuration/AsebaRobotConfiguration.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/configuration/EmergentRobotConfiguration.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/controller/RobotController.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/controller/RobotControllerFactory.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/controller/ThymioController.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/controller/ThymioEmergentController.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/controller/ThymioOAController.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/detector/Detector.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/detector/DetectorFactory.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/detector/RobotDetector.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/robot/Thymio.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/network/RobotServer.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/network/SimulationServiceImpl.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/util/ea/Gene.h)
+set(SOURCE_FILES ${SOURCE_FILES} include/util/env/Environment.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/util/neuralnetworks/Elman.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/util/neuralnetworks/LayeredNeuralNetwork.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/util/neuralnetworks/MLP.h)
@@ -38,10 +73,17 @@ set(SOURCE_FILES ${SOURCE_FILES} include/FrameStructure.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/SharedFrame.h)
 set(SOURCE_FILES ${SOURCE_FILES} include/SharedQueue.h)
 
+set(SOURCE_FILES ${SOURCE_FILES} src/configuration/EmergentRobotConfiguration.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/controller/RobotControllerFactory.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/controller/ThymioController.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/controller/ThymioEmergentController.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/controller/ThymioOAController.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/detector/DetectorFactory.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/detector/RobotDetector.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/network/RobotServer.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/network/SimulationServiceImpl.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/util/ea/Gene.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/util/env/Environment.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/Elman.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/LayeredNeuralNetwork.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/MLP.cpp)
@@ -49,29 +91,40 @@ set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/NeuralNetwork.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/NeuralNetworkException.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/Perceptron.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/util/neuralnetworks/ReservoirNeuralNetwork.cpp)
-
 set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoHandler.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoAnalyser.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedQueue.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedFrame.cpp)
-set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp include/controller/ThymioEmergentController.h include/controller/ThymioOAController.h src/controller/ThymioEmergentController.cpp src/controller/ThymioOAController.cpp include/util/ea/Gene.h src/util/ea/Gene.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
 
 ## Create the executable "emergent_robot" while linking in the required library files
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${LIBS})
+add_executable(${PROJECT_NAME}
+        ${SOURCE_FILES}
+        ${PROTO_SRCS}
+        ${GRPC_SRCS}
+)
+
+target_link_libraries(${PROJECT_NAME}
+        ${LIBS}
+        gRPC::grpc++_reflection
+        protobuf::libprotobuf
+)
 
 install(TARGETS ${PROJECT_NAME} EXPORT EmergentControllerConfig
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION bin
+)
 
 install(DIRECTORY res DESTINATION share/${PROJECT_NAME}
         PATTERN "res/images/*"
         PATTERN "res/config/*"
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-        GROUP_EXECUTE GROUP_READ)
+        GROUP_EXECUTE GROUP_READ
+)
 
 install(DIRECTORY res/scripts DESTINATION lib/systemd/system
         PATTERN "res/scripts/*"
         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-        GROUP_EXECUTE GROUP_READ)
+        GROUP_EXECUTE GROUP_READ
+)

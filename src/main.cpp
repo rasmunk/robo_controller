@@ -3,7 +3,10 @@
 #include <include/detector/DetectorFactory.h>
 #include <include/SharedFrame.h>
 #include <include/video/VideoHandler.h>
+#include <include/configuration/RobotConfiguration.h>
 #include <include/controller/RobotControllerFactory.h>
+#include <include/network/SimulationServiceImpl.h>
+#include <include/network/RobotServer.h>
 
 
 using namespace cv;
@@ -11,12 +14,18 @@ using namespace std;
 
 int main(int argc, char** argv )
 {
-    // Make the launch dynamic
+    // either network or local
 
     // Launch the shared frame structure and the Detector factory
     RobotControllerFactory robot_controller_factory;
     //auto robot_controller = robot_controller_factory.make_shared_robot_controller(Thymio);
-    auto robot_controller = robot_controller_factory.make_unique_robot_controller(Emergent);
+    auto robot_controller = robot_controller_factory.make_shared_robot_controller(ThymioObstacleAvoidance);
+
+    /*SimulationServiceImpl simulationService;
+    simulationService.sink(robot_controller);
+    RobotServer server{"127.0.0.1:30000"};
+    server.register_service(simulationService);
+    server.start();*/
 
     /*
     DetectorFactory dec_factory;
@@ -42,6 +51,8 @@ int main(int argc, char** argv )
     /* video_analyser.stop();
     video_handler.stop();
     */
+
+    //server.stop();
     cout << "Main Finished" << "\n";
     return 0;
 }

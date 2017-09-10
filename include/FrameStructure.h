@@ -10,6 +10,7 @@ public:
     virtual void add(cv::Mat&&) = 0;
     virtual size_t size() = 0;
     virtual cv::Mat pop() = 0;
+    virtual ~FrameStructure() = default;
 };
 
 

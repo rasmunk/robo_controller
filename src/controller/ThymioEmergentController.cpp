@@ -4,24 +4,37 @@
 
 #include <include/controller/ThymioEmergentController.h>
 #include <include/util/ea/Gene.h>
+#include <include/robot/Thymio.h>
 
 //TODO -> load weights lower and upper bounds from config
 using namespace std;
-void ThymioEmergentController::start() {
-    train_behavior();
-    //_runner = thread(&ThymioEmergentController::train_behavior, this);
+using namespace std::placeholders;
+
+ThymioEmergentController::ThymioEmergentController() {
+    _emergent_configuration = make_unique<EmergentRobotConfiguration>(8, 0, 2);
+    _emergent_configuration->initialize();
+    _emergent_configuration->update();
+
+    _thymio_interface->loadScript("BasicThymio.aesl");
+    _thymio_interface->connectEvent("ObstacleDetected", bind(&ThymioEmergentController::callback_nn_translate, this, _1));
 }
 
-void ThymioEmergentController::train_behavior() {
-    vector<double> weights;
-    vector<unsigned int> hidden_layer;
-    hidden_layer.push_back(_num_hidden);
-    vector<Gene> encoded_weights((_num_inputs * _num_hidden) + (_num_hidden * _num_outputs));
-    for (int i = 0; i < encoded_weights.size(); ++i) { weights.push_back(encoded_weights[i].get_value()); };
-    _mlp = make_unique<Neural::MLP>(weights, _num_inputs, _num_outputs, hidden_layer, true, true);
-}
+// TODO -> change assert to Expect
+// Translates the incoming proximity values into motor speeds
+void ThymioEmergentController::callback_nn_translate(const Values& proximity_values) {
+    cout << "Obstacle: " << Aseba::DBusInterface::toString(proximity_values) << endl;
+    // translate into input
+    // range of proximity sensors -> normalized between 0.0 and 1.0
+    vector<double> input;
+    for (const auto &prox_value : proximity_values) {
+        double norm_value = (double)(prox_value - Thymio::min_proximity) / (double)(Thymio::max_proximity - Thymio::min_proximity);
+        input.push_back(norm_value);
+    }
+    vector<double> output = _emergent_configuration->get_activations(input);
+    // TODO -> Test for this.
+    qint16 new_left_speed = (qint16)(Thymio::max_speed * output.at(0));
+    qint16 new_right_speed = (qint16)(Thymio::max_speed * output.at(0));
+    cout << "New Speed, left: " << new_left_speed << " right: " << new_right_speed << endl;
 
-
-void ThymioEmergentController::stop() {
-
+    _thymio_interface->sendEventName("Speed", Values({new_left_speed, new_right_speed}));
 }

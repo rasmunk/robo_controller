@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "robo_engine.network";
+option java_outer_classname = "SimulationProto";
+option objc_class_prefix = "SP";
+
+package network;
+
+service Simulation {
+    rpc UpdateSimulation(SimulationMessage) returns (SimulationMessage) {}
+    rpc RegisterRobot(Robot) returns (RobotResponse) {}
+    rpc SetMotorSpeed(MotorSpeed) returns (RobotResponse) {}
+    rpc GetRobotState(Robot) returns (RobotState) {}
+    rpc SetGenome(Genome) returns (Empty) {}
+}
+
+message MotorSpeed {
+    Robot robot = 1;
+    repeated float motor_speeds = 2;
+}
+
+message SimulationMessage {
+    int32 id = 1;
+    string message = 2;
+}
+
+message Genome {
+    repeated double nn_weights = 1;
+    repeated bool bool_weights = 2;
+    float fitness = 3;
+}
+
+message RobotState {
+    Robot robot = 1;
+    repeated float proximity_sensors = 2;
+}
+
+message Robot {
+    int32 id = 1;
+}
+
+message RobotResponse {
+    bool success = 1;
+}
+
+message Empty {}
