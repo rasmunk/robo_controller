@@ -6,7 +6,7 @@
 #define EMERGENT_CONTROLLER_ROBOSERVER_H
 
 #include <grpc++/grpc++.h>
-#include <cmake-build-debug/proto-src/simulation.grpc.pb.h>
+#include <simulation.grpc.pb.h>
 #include <thread>
 
 class RobotServer {

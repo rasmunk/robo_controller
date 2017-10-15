@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-set(PROJECT_NAME )
+set(PROJECT_NAME emergent_controller)
 project(emergent_controller)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -23,25 +23,8 @@ include_directories(${QT_INCLUDE_DIR})
 #Protobufs
 find_package(Protobuf REQUIRED)
 find_package(GRPC REQUIRED)
+add_subdirectory(messages)
 
-set(PROTOS
-        ${CMAKE_CURRENT_SOURCE_DIR}/res/proto/simulation.proto
-)
-
-set(PROTO_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/proto-src)
-file(MAKE_DIRECTORY ${PROTO_SRC_DIR})
-include_directories(${PROTO_SRC_DIR})
-protobuf_generate_cpp(PROTO_SRCS
-        PROTO_HDRS
-        ${PROTO_SRC_DIR}
-        ${PROTOS}
-)
-
-grpc_generate_cpp(GRPC_SRCS
-        GRPC_HDRS
-        ${PROTO_SRC_DIR}
-        ${PROTOS}
-)
 
 ## Setup project source files
 set(SOURCE_FILES ${SOURCE_FILES} include/configuration/RobotConfiguration.h)
@@ -100,14 +83,11 @@ set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
 ## Create the executable "emergent_robot" while linking in the required library files
 add_executable(${PROJECT_NAME}
         ${SOURCE_FILES}
-        ${PROTO_SRCS}
-        ${GRPC_SRCS}
 )
 
 target_link_libraries(${PROJECT_NAME}
         ${LIBS}
-        gRPC::grpc++_reflection
-        protobuf::libprotobuf
+        messages
 )
 
 install(TARGETS ${PROJECT_NAME} EXPORT EmergentControllerConfig

@@ -1,0 +1,6 @@
+file(GLOB ProtoFiles "${CMAKE_CURRENT_SOURCE_DIR}/*.proto")
+PROTOBUF_GENERATE_CPP(ProtoSources ProtoHeaders ${CMAKE_CURRENT_BINARY_DIR} ${ProtoFiles})
+GRPC_GENERATE_CPP(GRPCSources GRPCHeaders ${CMAKE_CURRENT_BINARY_DIR} ${ProtoFiles})
+add_library(messages STATIC ${ProtoSources} ${ProtoHeaders} ${GRPCSources} ${GRPCHeaders})
+target_link_libraries(messages ${PROTOBUF_LIBRARY} ${GRPC_GRPC++_LIBRARY})
+target_include_directories(messages PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

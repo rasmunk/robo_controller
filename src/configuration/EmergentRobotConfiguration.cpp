@@ -3,7 +3,6 @@
 //
 
 #include <include/configuration/EmergentRobotConfiguration.h>
-#include <cmake-build-debug/proto-src/simulation.pb.h>
 
 using namespace std;
 

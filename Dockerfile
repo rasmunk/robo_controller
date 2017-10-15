@@ -11,6 +11,7 @@ RUN update=1; while test $update -ne 0; do apt-get update --fix-missing; update=
     libqt4-test \
     libqt4-dev \
     libqt4-opengl-dev \
+    libprotobuf-dev \
     curl \
     ca-certificates \
     ssh-client \

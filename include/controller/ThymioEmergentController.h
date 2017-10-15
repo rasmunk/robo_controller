@@ -6,8 +6,6 @@
 #define EMERGENT_CONTROLLER_THYMIOEMERGENTCONTROLLER_H
 
 #include <include/controller/ThymioController.h>
-
-#include <cmake-build-debug/proto-src/simulation.pb.h>
 #include <include/configuration/EmergentRobotConfiguration.h>
 
 class ThymioEmergentController : public ThymioController {

@@ -7,7 +7,7 @@
 
 #include <include/configuration/RobotConfiguration.h>
 #include <include/util/neuralnetworks/MLP.h>
-#include "simulation.grpc.pb.h"
+#include <simulation.grpc.pb.h>
 
 /*
  * Defines the configuration of how an evolving robot controller is configured. E.g. it's NN composition

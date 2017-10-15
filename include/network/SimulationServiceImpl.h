@@ -7,7 +7,7 @@
 
 #include <grpc++/grpc++.h>
 #include <include/controller/RobotController.h>
-#include "simulation.grpc.pb.h"
+#include <simulation.grpc.pb.h>
 
 class SimulationServiceImpl final : public network::Simulation::Service {
 public:

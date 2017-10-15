@@ -3,7 +3,6 @@
 //
 
 #include <include/network/SimulationServiceImpl.h>
-#include <cmake-build-debug/proto-src/simulation.pb.h>
 
 using grpc::ServerContext;
 using grpc::ClientContext;
