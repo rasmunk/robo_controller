@@ -9,10 +9,10 @@ using namespace cv;
 using namespace std;
 
 void RobotDetector::initialize(std::string reference_image_path) {
-    Mat image_input, image_gray;
+    /*Mat image_input, image_gray;
     image_input = imread(reference_image_path, IMREAD_COLOR);
-//    assert(image_input != NULL);
-    /*cvtColor(image_input, image_gray, CV_BGR2GRAY);
+    assert(image_input != NULL);
+    cvtColor(image_input, image_gray, CV_BGR2GRAY);
     blur(image_gray, image_gray, Size(3,3));
     reference_mat = image_gray;
     orb = ORB::create();

@@ -1,30 +1,28 @@
-cmake_minimum_required(VERSION 3.0.2)
-set(PROJECT_NAME emergent_controller)
+cmake_minimum_required(VERSION 3.1.0)
 project(emergent_controller)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
-# Cmake find modules
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_ext")
 
-## Include project source code
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# Prepare for QT
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
 ## Set the OpenCV HomeDir and library files
 find_package(OpenCV REQUIRED)
 set(LIBS ${OpenCV_LIBS})
 ## load asebaclient library
 set(LIBS ${LIBS} asebaclient)
 
-## including qt4 dbus which is requried by asebaclient
-find_package(Qt4 COMPONENTS QtDBus QtCore REQUIRED)
-set(LIBS ${LIBS} ${QT_QTCORE_LIBRARIES} ${QT_QTDBUS_LIBRARIES})
-## Contains every qt core module include headers e.g QtDBus
-include_directories(${QT_INCLUDE_DIR})
+## including qt5 dbus,core which is requried by asebaclient
+set(Qt5_DIR /usr/local/opt/qt/lib/cmake/Qt5/)
+find_package(Qt5 CONFIG REQUIRED DBus Core)
 
 #Protobufs
 find_package(Protobuf REQUIRED)
 find_package(GRPC REQUIRED)
 add_subdirectory(messages)
-
 
 ## Setup project source files
 set(SOURCE_FILES ${SOURCE_FILES} include/configuration/RobotConfiguration.h)
@@ -81,14 +79,8 @@ set(SOURCE_FILES ${SOURCE_FILES} src/SharedFrame.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
 
 ## Create the executable "emergent_robot" while linking in the required library files
-add_executable(${PROJECT_NAME}
-        ${SOURCE_FILES}
-)
-
-target_link_libraries(${PROJECT_NAME}
-        ${LIBS}
-        messages
-)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} ${LIBS} Qt5::Core Qt5::DBus messages)
 
 install(TARGETS ${PROJECT_NAME} EXPORT EmergentControllerConfig
         ARCHIVE DESTINATION lib
