@@ -21,7 +21,10 @@ ThymioController::ThymioController() {
     }
     _thymio_interface = make_unique<Aseba::DBusInterface>();
     if (_thymio_interface == nullptr) {
-        throw runtime_error{"Failed to initialize the Aseba DBusInterface connection"};
+        throw runtime_error{"Failed to initialize the Thymio Interface connection"};
+    }
+    if (!_thymio_interface->checkConnection()) {
+        throw runtime_error("Failed to establish Thymio DBus connection");
     }
 }
 

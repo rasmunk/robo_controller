@@ -25,8 +25,8 @@ int main(int argc, char** argv )
     simulationService.sink(robot_controller);
     RobotServer server{"127.0.0.1:30000"};
     server.register_service(simulationService);
-    server.start();*/
-
+    server.start();
+    */
     /*
     DetectorFactory dec_factory;
     auto shared_detector = shared_ptr<Detector>(move(dec_factory.make_detector(Robot)));
@@ -44,7 +44,7 @@ int main(int argc, char** argv )
     video_analyser.start();
      */
     // Launches a thread that controls how the robot operates
-    robot_controller->start();
+    /*robot_controller->start();
 
     this_thread::sleep_for(300s);
     robot_controller->stop(); // Stops the execution and joins the thread

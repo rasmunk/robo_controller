@@ -11,7 +11,6 @@
 #include <atomic>
 #include <include/configuration/AsebaRobotConfiguration.h>
 
-
 class ThymioController : public RobotController {
 protected:
     std::thread _runner;

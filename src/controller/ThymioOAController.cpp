@@ -8,13 +8,14 @@ using namespace std;
 using namespace std::placeholders;
 
 ThymioOAController::ThymioOAController() {
-    _thymio_interface->loadScript("OAThymio.aesl");
+    _thymio_interface->loadScript("BasicThymio.aesl");
+    /*_thymio_interface->connectEvent("Stop", bind(&ThymioController::callback_keepalive, this, _1));
+    _thymio_interface->connectEvent("SeeNothing", bind(&ThymioOAController::callback_clear, this, _1));
     _thymio_interface->connectEvent("ObstacleDetected", bind(&ThymioOAController::callback_avoid, this, _1));
-    _thymio_interface->connectEvent("Falling", bind(&ThymioOAController::callback_falling, this, _1));
-    _thymio_interface->connectEvent("Clear", bind(&ThymioOAController::callback_clear, this, _1));
-    _thymio_interface->connectEvent("Stop", bind(&ThymioController::callback_keepalive, this, _1));
-    _thymio_interface->setVariable("thymio-II", "normal_speed", Values({Thymio::normal_speed}));
-    _thymio_interface->sendEventName("MoveNormally", Values({}));
+    */
+
+    _thymio_interface->sendEventName("SetSpeed", Values({Thymio::normal_speed}));
+    _thymio_interface->sendEventName("Move", Values({}));
 }
 
 void ThymioOAController::callback_avoid(const Values& event_values)
@@ -25,7 +26,7 @@ void ThymioOAController::callback_avoid(const Values& event_values)
 }
 
 // Robot sees nothing -> sends it current speed on both motors
-// if they are normal values -> do nothing -> else reset to normal -> forward
+// if they are normal val*ues -> do nothing -> else reset to normal -> forward
 void ThymioOAController::callback_clear(const Values& event_values)
 {
     cout << "Thymio sees nothing: " << Aseba::DBusInterface::toString(event_values) << endl;

@@ -93,7 +93,6 @@
     sub rightside
     	motor.right.target = (-normal_speed + (-rotational_speed))
     	motor.left.target = normal_speed + rotational_speed
-    	call leds.top(0,0,100)
 
     ## Drive backwards and then turn around to either right or left for a random amount of iterations (between 0 and 32767)
     ## https://www.thymio.org/en:asebastdnative
