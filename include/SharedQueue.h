@@ -5,18 +5,18 @@
 #ifndef TEST4_SHAREDQUEUE_H
 #define TEST4_SHAREDQUEUE_H
 #include <include/FrameStructure.h>
-#include <queue>
 #include <mutex>
+#include <queue>
 
-class SharedQueue : public FrameStructure
-{
+class SharedQueue : public FrameStructure {
 private:
     std::queue<cv::Mat> _queue;
     std::mutex _mutex;
+
 public:
-    virtual void add(cv::Mat&&) override ;
-    virtual size_t size() override ;
-    virtual cv::Mat pop() override ;
+    virtual void add(cv::Mat&&) override;
+    virtual size_t size() override;
+    virtual cv::Mat pop() override;
 };
 
-#endif //TEST4_SHAREDQUEUE_H
+#endif // TEST4_SHAREDQUEUE_H

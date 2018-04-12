@@ -12,4 +12,4 @@ public:
     virtual ~RobotConfiguration() = default;
 };
 
-#endif //EMERGENT_CONTROLLER_ROBOTCONFIGURATION_H
+#endif // EMERGENT_CONTROLLER_ROBOTCONFIGURATION_H

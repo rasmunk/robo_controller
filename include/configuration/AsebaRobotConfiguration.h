@@ -5,17 +5,18 @@
 #ifndef EMERGENT_CONTROLLER_ASEBAROBOTCONFIGURATION_H
 #define EMERGENT_CONTROLLER_ASEBAROBOTCONFIGURATION_H
 
-
 /*
  * Defines the configuraiton properties of an underlyging aseba controlled robot
  *
  */
 
+#include <include/controller/RobotController.h>
+
 class AsebaRobotConfiguration : public RobotConfiguration {
 public:
     void initialize() override;
-private:
 
+private:
 };
 
-#endif //EMERGENT_CONTROLLER_ASEBAROBOTCONFIGURATION_H
+#endif // EMERGENT_CONTROLLER_ASEBAROBOTCONFIGURATION_H

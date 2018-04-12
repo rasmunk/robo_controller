@@ -2,24 +2,28 @@
 // Created by Rasmus Munk on 18/06/2017.
 //
 
-#include <random>
 #include <include/controller/ThymioOAController.h>
 #include <include/robot/Thymio.h>
+#include <random>
 
 using namespace std;
 using namespace std::placeholders;
 
-ThymioOAController::ThymioOAController(const RobotConfig& robotConfig) : ThymioController(robotConfig) {}
+ThymioOAController::ThymioOAController(const RobotConfig& robotConfig)
+    : ThymioController(robotConfig)
+{
+}
 
-
-void ThymioOAController::setup() {
+void ThymioOAController::setup()
+{
     _actions["ObstacleDetected"] = std::bind(&ThymioOAController::obstacle_detected, this);
     _actions["SeeNothing"] = std::bind(&ThymioOAController::see_nothing, this);
     _actions["Falling"] = std::bind(&ThymioOAController::falling, this);
     _aseba_interface->sendEvent("Forward");
 }
 
-void ThymioOAController::obstacle_detected() {
+void ThymioOAController::obstacle_detected()
+{
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> real_dis(0.1, 1.0);
@@ -34,16 +38,14 @@ void ThymioOAController::obstacle_detected() {
     }
     // sleep between 0 and 5 seconds
 
-    QThread::msleep((unsigned long) int_dis(gen));
+    QThread::msleep((unsigned long)int_dis(gen));
     _aseba_interface->sendEvent("Forward");
 }
 
-void ThymioOAController::see_nothing() {
+void ThymioOAController::see_nothing()
+{
     _aseba_interface->sendEvent("Forward");
 }
 
 // TODO -> implement
-void ThymioOAController::falling()
-{
-
-}
+void ThymioOAController::falling() {}

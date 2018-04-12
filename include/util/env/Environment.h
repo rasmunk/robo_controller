@@ -8,8 +8,8 @@
 class Environment {
 public:
     void load();
-private:
 
+private:
 };
 
-#endif //EMERGENT_CONTROLLER_ENVIRONMENT_H
+#endif // EMERGENT_CONTROLLER_ENVIRONMENT_H

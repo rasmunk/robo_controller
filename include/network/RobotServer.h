@@ -24,7 +24,6 @@ public:
     void register_service(network::Simulation::Service& service);
     void start();
     void stop();
-
 };
 
-#endif //EMERGENT_CONTROLLER_ROBOSERVER_H
+#endif // EMERGENT_CONTROLLER_ROBOSERVER_H

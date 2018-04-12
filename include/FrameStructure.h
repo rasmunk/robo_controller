@@ -13,5 +13,4 @@ public:
     virtual ~FrameStructure() = default;
 };
 
-
-#endif //TEST3_FRAMESTRUCTURE_H
+#endif // TEST3_FRAMESTRUCTURE_H

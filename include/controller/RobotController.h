@@ -8,11 +8,11 @@
 #include <include/config/RobotConfig.h>
 #include <include/configuration/RobotConfiguration.h>
 
-class RobotController  {
+class RobotController {
 public:
     virtual void start() = 0;
     virtual void stop() = 0;
     virtual ~RobotController() = default;
 };
 
-#endif //EMERGENT_ROBOT_ROBOTCONTROLLER_H
+#endif // EMERGENT_ROBOT_ROBOTCONTROLLER_H

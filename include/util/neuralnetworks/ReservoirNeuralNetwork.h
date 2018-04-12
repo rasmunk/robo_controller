@@ -6,112 +6,102 @@
  */
 
 #ifndef RESERVOIRNEURALNETWORK_H
-#define RESERVOIRNEURALNETWORK_H 
+#define RESERVOIRNEURALNETWORK_H
 
 #include <include/util/neuralnetworks/NeuralNetwork.h>
 
-
 namespace Neural {
 
-	/**
-	 * Definition of a reservoir neural network
-	 * @author Leo Cazenille <leo.cazenille@upmc.fr>
-	 */
-	class ReservoirNeuralNetwork : public NeuralNetwork {
+/**
+ * Definition of a reservoir neural network
+ * @author Leo Cazenille <leo.cazenille@upmc.fr>
+ */
+class ReservoirNeuralNetwork : public NeuralNetwork {
+protected:
+    /** Size of the reservoir, ie of neurons in the reservoir */
+    unsigned int _reservoirSize;
 
-		protected:
+    /* Ranges of weights */
+    double _inputToReservoirWeightRange;
+    double _inputToOutputWeightRange;
+    double _reservoirToOutputWeightRange;
+    double _outputToReservoirWeightRange;
+    double _outputToOutputWeightRange;
 
-			/** Size of the reservoir, ie of neurons in the reservoir */
-			unsigned int _reservoirSize;
+    /* Flags to define which connections are allowed */
+    bool _allowInputToOutputDirectConnections;
+    bool _allowOutputSelfRecurrentConnections;
+    bool _allowInputToReservoirConnections;
+    bool _allowOutputToReservoirConnections;
 
-			/* Ranges of weights */
-			double _inputToReservoirWeightRange;
-			double _inputToOutputWeightRange;
-			double _reservoirToOutputWeightRange;
-			double _outputToReservoirWeightRange;
-			double _outputToOutputWeightRange;
+    /**
+   * @return the number of neurons
+   */
+    size_t getNbNeurons();
 
-			/* Flags to define which connections are allowed */
-			bool _allowInputToOutputDirectConnections;
-			bool _allowOutputSelfRecurrentConnections;
-			bool _allowInputToReservoirConnections;
-			bool _allowOutputToReservoirConnections;
+public:
+    // -+-+-  Constructors/Destructors  -+-+- //
 
-			/**
-			 * @return the number of neurons
-			 */
-			size_t getNbNeurons();
+    virtual ~ReservoirNeuralNetwork();
 
+    ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+        unsigned int nbOutputs, unsigned int reservoirSize,
+        double inputToReservoirWeightRange,
+        double inputToOutputWeightRange,
+        double reservoirToOutputWeightRange,
+        double outputToReservoirWeightRange,
+        double outputToOutputWeightRange,
+        bool allowInputToOutputDirectConnections,
+        bool allowOutputSelfRecurrentConnections,
+        bool allowInputToReservoirConnections,
+        bool allowOutputToReservoirConnections);
 
-		public :
+    ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+        unsigned int nbOutputs, unsigned int reservoirSize);
 
-			// -+-+-  Constructors/Destructors  -+-+- //
+    /** Deep Copy constructor */
+    ReservoirNeuralNetwork(ReservoirNeuralNetwork const& other);
 
-			virtual ~ReservoirNeuralNetwork();
+    // -+-+-  Accessors/Mutators  -+-+- //
 
-			ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs, unsigned int reservoirSize,
-					double inputToReservoirWeightRange,
-					double inputToOutputWeightRange,
-					double reservoirToOutputWeightRange,
-					double outputToReservoirWeightRange,
-					double outputToOutputWeightRange,
-					bool allowInputToOutputDirectConnections,
-					bool allowOutputSelfRecurrentConnections,
-					bool allowInputToReservoirConnections,
-					bool allowOutputToReservoirConnections);
+    /**
+   * Accessor for reservoirSize
+   */
+    unsigned int getReservoirSize() const;
 
-			ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs, unsigned int reservoirSize);
+    /**
+   * Accessor for allowInputToOutputDirectConnections
+   */
+    bool areInputToOutputDirectConnectionsAllowed() const;
 
-			/** Deep Copy constructor */
-			ReservoirNeuralNetwork(ReservoirNeuralNetwork const& other);
+    /**
+   * Accessor for allowOutputSelfRecurrentConnections
+   */
+    bool areOutputSelfRecurrentConnectionsAllowed() const;
 
+    /**
+   * Accessor for allowInputToReservoirConnections
+   */
+    bool areInputToReservoirConnectionsAllowed() const;
 
-			// -+-+-  Accessors/Mutators  -+-+- //
+    /**
+   * Accessor for allowOutputToReservoirConnections
+   */
+    bool areOutputToReservoirConnectionsAllowed() const;
 
-			/**
-			 * Accessor for reservoirSize
-			 */
-			unsigned int getReservoirSize() const;
+    // -+-+-  Main Methods  -+-+- //
 
-			/**
-			 * Accessor for allowInputToOutputDirectConnections
-			 */
-			bool areInputToOutputDirectConnectionsAllowed() const;
+    /**
+   * {@InheritDoc}
+   */
+    virtual ReservoirNeuralNetwork* clone() const = 0;
 
-			/**
-			 * Accessor for allowOutputSelfRecurrentConnections
-			 */
-			bool areOutputSelfRecurrentConnectionsAllowed() const;
+    /**
+   * {@InheritDoc}
+   */
+    virtual std::string toString() const;
+};
 
-			/**
-			 * Accessor for allowInputToReservoirConnections
-			 */
-			bool areInputToReservoirConnectionsAllowed() const;
-
-			/**
-			 * Accessor for allowOutputToReservoirConnections
-			 */
-			bool areOutputToReservoirConnectionsAllowed() const;
-
-
-
-			// -+-+-  Main Methods  -+-+- //
-
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual ReservoirNeuralNetwork* clone() const = 0;
-
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual std::string toString() const;
-
-
-	};
-
-
-}
+} // namespace Neural
 
 #endif
-

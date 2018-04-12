@@ -13,6 +13,4 @@ public:
     virtual ~Detector() = default;
 };
 
-
-
-#endif //TEST3_DETECTOR_H
+#endif // TEST3_DETECTOR_H

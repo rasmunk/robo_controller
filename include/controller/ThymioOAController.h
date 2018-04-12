@@ -8,15 +8,17 @@
 #include <include/controller/ThymioController.h>
 
 class ThymioOAController : public ThymioController {
-
 public:
     ThymioOAController(const RobotConfig&);
+
     void setup() override;
 
 private:
     void obstacle_detected();
+
     void see_nothing();
+
     void falling();
 };
 
-#endif //EMERGENT_CONTROLLER_THYMIOOACONTROLLER_H
+#endif // EMERGENT_CONTROLLER_THYMIOOACONTROLLER_H

@@ -12,59 +12,51 @@
 #include <string>
 #include <vector>
 
-
 namespace Neural {
 
-	/**
-	 * A basic Perceptron
-	 * @author Leo Cazenille <leo.cazenille@upmc.fr>
-	 */
-	class Perceptron : public MLP {
+/**
+ * A basic Perceptron
+ * @author Leo Cazenille <leo.cazenille@upmc.fr>
+ */
+class Perceptron : public MLP {
+protected:
+    /**
+   * {@InheritDoc}
+   */
+    virtual unsigned int computeRequiredNumberOfWeights();
 
-		protected:
+public:
+    // -+-+-  Constructors/Destructors  -+-+- //
 
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual unsigned int computeRequiredNumberOfWeights();
+    Perceptron(std::vector<double>& weights, unsigned int nbInputs,
+        unsigned int nbOutputs);
+    /** Deep Copy constructor */
+    Perceptron(Perceptron const& other);
+    virtual ~Perceptron();
 
+    // -+-+-  Main Methods  -+-+- //
 
-		public:
+    /**
+   * {@InheritDoc}
+   */
+    virtual Perceptron* clone() const;
 
-			// -+-+-  Constructors/Destructors  -+-+- //
+    /**
+   * {@InheritDoc}
+   */
+    virtual std::string toString() const;
 
-			Perceptron(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs);
-			/** Deep Copy constructor */
-			Perceptron(Perceptron const& other);
-			virtual ~Perceptron();
+    /**
+   * {@InheritDoc}
+   */
+    virtual void step();
 
+    /**
+   * Return a string identifying this class
+   */
+    static std::string getNNTypeName();
+};
 
-			// -+-+-  Main Methods  -+-+- //
-
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual Perceptron* clone() const;
-
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual std::string toString() const;
-
-			/**
-			 * {@InheritDoc}
-			 */
-			virtual void step();
-
-			/**
-			 * Return a string identifying this class
-			 */
-			static std::string getNNTypeName();
-
-	};
-
-}
-
+} // namespace Neural
 
 #endif
-

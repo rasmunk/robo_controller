@@ -6,51 +6,45 @@
  */
 
 #include <include/util/neuralnetworks/Perceptron.h>
-#include <sstream>
 #include <math.h>
+#include <sstream>
 
 using namespace Neural;
 
-
 /* --------------------- Perceptron --------------------- */
 
-
-Perceptron::Perceptron(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs) :
-		MLP(weights, nbInputs, nbOutputs, false) {
-	_nbNeuronsPerLayer = std::vector<unsigned int>(2);
-	_nbNeuronsPerLayer[0] = _nbInputs;
-	_nbNeuronsPerLayer[1] = _nbOutputs;
+Perceptron::Perceptron(std::vector<double>& weights, unsigned int nbInputs,
+    unsigned int nbOutputs)
+    : MLP(weights, nbInputs, nbOutputs, false)
+{
+    _nbNeuronsPerLayer = std::vector<unsigned int>(2);
+    _nbNeuronsPerLayer[0] = _nbInputs;
+    _nbNeuronsPerLayer[1] = _nbOutputs;
 }
 
-
-
-Perceptron::Perceptron(Perceptron const& other) : MLP(other) {
-	// ...
+Perceptron::Perceptron(Perceptron const& other)
+    : MLP(other)
+{
+    // ...
 }
 
-Perceptron::~Perceptron() {
-	// ...
+Perceptron::~Perceptron()
+{
+    // ...
 }
 
-std::string Perceptron::toString() const {
-	return LayeredNeuralNetwork::toString();
+std::string Perceptron::toString() const
+{
+    return LayeredNeuralNetwork::toString();
 }
 
+void Perceptron::step() { MLP::step(); }
 
-void Perceptron::step() {
-	MLP::step();
+unsigned int Perceptron::computeRequiredNumberOfWeights()
+{
+    return MLP::computeRequiredNumberOfWeights();
 }
 
+std::string Perceptron::getNNTypeName() { return "Perceptron"; }
 
-unsigned int Perceptron::computeRequiredNumberOfWeights() {
-	return MLP::computeRequiredNumberOfWeights();
-}
-
-std::string Perceptron::getNNTypeName() {
-	return "Perceptron";
-}
-
-Perceptron* Perceptron::clone() const {
-	return new Perceptron(*this);
-}
-
+Perceptron* Perceptron::clone() const { return new Perceptron(*this); }

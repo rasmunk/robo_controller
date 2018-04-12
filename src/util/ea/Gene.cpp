@@ -4,16 +4,20 @@
 #include <include/util/ea/Gene.h>
 
 using namespace std;
-Gene::Gene() {
+Gene::Gene()
+{
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     _generator = std::default_random_engine(seed);
-    _dist_int = std::uniform_int_distribution<>(0,1);
+    _dist_int = std::uniform_int_distribution<>(0, 1);
     _encoding.resize(8);
-    for (int i = 0; i < _encoding.size(); ++i) { _encoding[i] = (_dist_int(_generator)); }
+    for (int i = 0; i < _encoding.size(); ++i) {
+        _encoding[i] = (_dist_int(_generator));
+    }
     _dist_real = std::uniform_real_distribution<>(0.0, 1.0);
 }
 
-void Gene::mutate() {
+void Gene::mutate()
+{
     for (int i = 0; i < _encoding.size(); ++i) {
         if (_dist_real(_generator) < 0.1) {
             if (_encoding[i]) {
@@ -25,7 +29,8 @@ void Gene::mutate() {
     }
 }
 
-double Gene::get_value() {
+double Gene::get_value()
+{
     _value = 0.0;
     for (int i = 0; i < _encoding.size(); ++i) {
         if (_encoding[i]) {

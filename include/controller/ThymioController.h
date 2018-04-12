@@ -5,14 +5,13 @@
 #ifndef EMERGENT_ROBOT_THYMIOCONTROLLER_H
 #define EMERGENT_ROBOT_THYMIOCONTROLLER_H
 
-#include <include/controller/RobotController.h>
 #include <asebaclient/AsebaInterface.h>
 #include <asebaclient/support/Message.h>
-#include <include/detector/Detector.h>
 #include <include/configuration/AsebaRobotConfiguration.h>
+#include <include/controller/RobotController.h>
+#include <include/detector/Detector.h>
 
 class ThymioController : public QObject, public RobotController {
-
     Q_OBJECT
 protected:
     std::shared_ptr<Detector> _shared_detector;
@@ -20,9 +19,9 @@ protected:
     std::map<std::string, std::function<void()>> _actions;
 
 protected slots:
-        // Defines behaviour -> _actions callbacks
-        virtual void setup();
-        void process_messages(const ENU::Message& message);
+    // Defines behaviour -> _actions callbacks
+    virtual void setup();
+    void process_messages(const ENU::Message& message);
 
 public:
     ThymioController(const RobotConfig&);
@@ -30,7 +29,6 @@ public:
     void start() override;
     void stop() override;
     void set_shared_detector(std::shared_ptr<Detector>);
+};
 
- };
-
-#endif //EMERGENT_ROBOT_THYMIOCONTROLLER_H
+#endif // EMERGENT_ROBOT_THYMIOCONTROLLER_H

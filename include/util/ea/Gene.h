@@ -5,9 +5,9 @@
 #ifndef EMERGENT_CONTROLLER_GENE_H
 #define EMERGENT_CONTROLLER_GENE_H
 
-#include <vector>
-#include <random>
 #include <chrono>
+#include <random>
+#include <vector>
 
 class Gene {
 private:
@@ -16,10 +16,11 @@ private:
     std::default_random_engine _generator;
     std::uniform_int_distribution<> _dist_int;
     std::uniform_real_distribution<> _dist_real;
+
 public:
     Gene();
     void mutate();
     double get_value();
 };
 
-#endif //EMERGENT_CONTROLLER_GENE_H
+#endif // EMERGENT_CONTROLLER_GENE_H

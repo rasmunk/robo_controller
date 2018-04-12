@@ -4,11 +4,11 @@
 
 #ifndef TEST3_VIDEOANALYSER_H
 #define TEST3_VIDEOANALYSER_H
-#include <include/detector/Detector.h>
+#include <atomic>
 #include <include/FrameStructure.h>
+#include <include/detector/Detector.h>
 #include <memory>
 #include <thread>
-#include <atomic>
 
 class VideoAnalyser {
 private:
@@ -20,13 +20,21 @@ private:
     void analyse();
     void quit();
     bool initialise(const cv::Size&);
+
 public:
-    VideoAnalyser(VideoAnalyser &&) = default; // request automatic generated move constructor -> http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
-    VideoAnalyser(std::shared_ptr<Detector> shared_detector, std::shared_ptr<FrameStructure> shared_frames, const cv::Size& frame_size) : _shared_detector(shared_detector), _shared_frames(shared_frames) { initialise(frame_size); };
+    VideoAnalyser(VideoAnalyser&&) = default; // request automatic generated move constructor ->
+        // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
+    VideoAnalyser(std::shared_ptr<Detector> shared_detector,
+        std::shared_ptr<FrameStructure> shared_frames,
+        const cv::Size& frame_size)
+        : _shared_detector(shared_detector)
+        , _shared_frames(shared_frames)
+    {
+        initialise(frame_size);
+    };
     ~VideoAnalyser() { this->quit(); };
     void start();
     void stop();
 };
 
-
-#endif //TEST3_VIDEOANALYSER_H
+#endif // TEST3_VIDEOANALYSER_H
