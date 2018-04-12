@@ -14,23 +14,27 @@ using namespace ENU;
 
 // Copies the current state of the object instance in a new thread and executes the flocking function
 
-ThymioController::ThymioController() {
-    char** argv;
-    int argc;
-    _aseba_interface = make_unique<AsebaInterface>("sdfsfs", "sdfdsfsd");
+ThymioController::ThymioController(const RobotConfig& robotConfig) {
+    _aseba_interface = make_unique<AsebaInterface>(QString::fromStdString(robotConfig.get("ip")),
+                                                   QString::fromStdString(robotConfig.get("port")));
     if (_aseba_interface == nullptr) {
         throw runtime_error{"Failed to initialize the Aseba Interface connection"};
     }
-    auto aesl_program = make_unique<AeslProgram>("sdfsdfdsf");
+    auto aesl_program = make_unique<AeslProgram>(robotConfig.get("aesl_file"));
     _aseba_interface->sink(move(aesl_program));
 
     connect(_aseba_interface.get(), SIGNAL(configured()), this, SLOT(setup()));
     connect(_aseba_interface.get(), SIGNAL(incommingUserMessage(const Message&)),
-                                           this, SLOT(process_message(const Message&)));
+                                           this, SLOT(process_messages(const Message&)));
+
+}
+
+// defines behaviour -> setup _actions callbacks
+void ThymioController::setup() {
+
 }
 
 void ThymioController::start() {
-    assert(_aseba_interface != NULL);
     _aseba_interface->start();
 }
 
@@ -40,9 +44,7 @@ void ThymioController::stop()
     _aseba_interface->stop();
 }
 
-// Call submitted message event
-// requires that the Message name is already registered as a called function pointer in _actions
-// override setup() to configure this
+
 void ThymioController::process_messages(const Message& message) {
     auto key = Aseba::WStringToUTF8(message.namedValue().name);
     if (_actions.find(key) != _actions.end())

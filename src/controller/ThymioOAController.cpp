@@ -9,7 +9,7 @@
 using namespace std;
 using namespace std::placeholders;
 
-ThymioOAController::ThymioOAController() : ThymioController() {}
+ThymioOAController::ThymioOAController(const RobotConfig& robotConfig) : ThymioController(robotConfig) {}
 
 
 void ThymioOAController::setup() {

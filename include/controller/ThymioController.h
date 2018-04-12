@@ -11,26 +11,26 @@
 #include <include/detector/Detector.h>
 #include <include/configuration/AsebaRobotConfiguration.h>
 
-class ThymioController : public RobotController, public QObject {
+class ThymioController : public QObject, public RobotController {
 
     Q_OBJECT
 protected:
     std::shared_ptr<Detector> _shared_detector;
     std::unique_ptr<ENU::AsebaInterface> _aseba_interface;
     std::map<std::string, std::function<void()>> _actions;
-    // Define what sort of actions the controller should setup
-    virtual void setup() = 0;
+
+protected slots:
+        // Defines behaviour -> _actions callbacks
+        virtual void setup();
+        void process_messages(const ENU::Message& message);
 
 public:
-    ThymioController();
+    ThymioController(const RobotConfig&);
     ~ThymioController() { this->stop(); };
     void start() override;
     void stop() override;
     void set_shared_detector(std::shared_ptr<Detector>);
 
-private:
-
-    void process_messages(const ENU::Message& message);
  };
 
 #endif //EMERGENT_ROBOT_THYMIOCONTROLLER_H

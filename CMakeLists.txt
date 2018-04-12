@@ -5,6 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_ext")
 
+# add extra include directories
+include_directories(/usr/local/include)
+
+# add extra lib directories
+link_directories(/usr/local/lib)
 
 find_package(LibXml2 REQUIRED)
 include_directories(${LIBXML2_INCLUDE_DIR})
@@ -80,11 +85,11 @@ set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoHandler.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoAnalyser.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedQueue.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedFrame.cpp)
-set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp include/config/RobotConfig.h)
 
 ## Create the executable "emergent_robot" while linking in the required library files
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${LIBS} Qt5::Core Qt5::DBus messages asebaclient ${LIBXML2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${LIBS} Qt5::Core Qt5::DBus messages asebaclient support ${LIBXML2_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} EXPORT EmergentControllerConfig
         ARCHIVE DESTINATION lib

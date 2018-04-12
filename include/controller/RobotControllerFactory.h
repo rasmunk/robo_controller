@@ -9,8 +9,8 @@
 enum Controller_type {ThymioBasic, ThymioEmergent, ThymioObstacleAvoidance};
 class RobotControllerFactory {
 public:
-    std::unique_ptr<RobotController> make_unique_robot_controller(Controller_type);
-    std::shared_ptr<RobotController> make_shared_robot_controller(Controller_type);
+    std::unique_ptr<RobotController> make_unique_robot_controller(Controller_type, const RobotConfig& robot_config);
+    std::shared_ptr<RobotController> make_shared_robot_controller(Controller_type, const RobotConfig& robot_config);
 };
 
 

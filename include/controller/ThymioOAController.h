@@ -8,10 +8,10 @@
 #include <include/controller/ThymioController.h>
 
 class ThymioOAController : public ThymioController {
+
 public:
-    ThymioOAController();
-    //TODO -> Setup should include a config object
-    void setup();
+    ThymioOAController(const RobotConfig&);
+    void setup() override;
 
 private:
     void obstacle_detected();
