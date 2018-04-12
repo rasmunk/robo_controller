@@ -1,61 +1,49 @@
 //
 // Created by Rasmus Munk on 18/06/2017.
 //
+
+#include <random>
 #include <include/controller/ThymioOAController.h>
 #include <include/robot/Thymio.h>
 
 using namespace std;
 using namespace std::placeholders;
 
-ThymioOAController::ThymioOAController() {
-    _thymio_interface->loadScript("BasicThymio.aesl");
-    /*_thymio_interface->connectEvent("Stop", bind(&ThymioController::callback_keepalive, this, _1));
-    _thymio_interface->connectEvent("SeeNothing", bind(&ThymioOAController::callback_clear, this, _1));
-    _thymio_interface->connectEvent("ObstacleDetected", bind(&ThymioOAController::callback_avoid, this, _1));
-    */
+ThymioOAController::ThymioOAController() : ThymioController() {}
 
-    _thymio_interface->sendEventName("SetSpeed", Values({Thymio::normal_speed}));
-    _thymio_interface->sendEventName("Move", Values({}));
+
+void ThymioOAController::setup() {
+    _actions["ObstacleDetected"] = std::bind(&ThymioOAController::obstacle_detected, this);
+    _actions["SeeNothing"] = std::bind(&ThymioOAController::see_nothing, this);
+    _actions["Falling"] = std::bind(&ThymioOAController::falling, this);
+    _aseba_interface->sendEvent("Forward");
 }
 
-void ThymioOAController::callback_avoid(const Values& event_values)
-{
-    // If detected -> average location, seperation and alignment
-    cout << "Thymio encountered an obstacle: " << Aseba::DBusInterface::toString(event_values) << endl;
-    _thymio_interface->sendEventName("Rotate", Values({}));
+void ThymioOAController::obstacle_detected() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> real_dis(0.1, 1.0);
+    std::uniform_int_distribution<> int_dis(1000, 2000);
+
+    _aseba_interface->sendEvent("Reverse");
+    QThread::msleep(2000);
+    if (real_dis(gen) < 0.5) {
+        _aseba_interface->sendEvent("RotateLeft");
+    } else {
+        _aseba_interface->sendEvent("RotateRight");
+    }
+    // sleep between 0 and 5 seconds
+
+    QThread::msleep((unsigned long) int_dis(gen));
+    _aseba_interface->sendEvent("Forward");
 }
 
-// Robot sees nothing -> sends it current speed on both motors
-// if they are normal val*ues -> do nothing -> else reset to normal -> forward
-void ThymioOAController::callback_clear(const Values& event_values)
-{
-    cout << "Thymio sees nothing: " << Aseba::DBusInterface::toString(event_values) << endl;
-    qint16 current_left_speed = event_values[0];
-    qint16 current_right_speed = event_values[1];
-    if (current_left_speed != Thymio::normal_speed or current_right_speed != Thymio::normal_speed)
-    {
-        cout << "Firing reset speed" << "\n";
-        _thymio_interface->sendEventName("MoveNormally", Values({}));
-    }
+void ThymioOAController::see_nothing() {
+    _aseba_interface->sendEvent("Forward");
 }
 
-void ThymioOAController::callback_falling(const Values& event_values)
+// TODO -> implement
+void ThymioOAController::falling()
 {
-    cout << "Falling: " << Aseba::DBusInterface::toString(event_values) << endl;
-    qint16 min_prox_distance = 2000;
-    for (size_t i = 0; i < event_values.size(); ++i)
-    {
-        if (event_values[i] < min_prox_distance)
-        {
-            min_prox_distance = event_values[i];
-        }
-    }
 
-    // If less than 800 for this particular sensor it's a good indicator that the surface is reflective.
-    // e.g. a table of white paper
-    // black carpet = 70
-    if (min_prox_distance < 40)
-    {
-        _thymio_interface->sendEventName("Rotate", Values({}));
-    }
 }
