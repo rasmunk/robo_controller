@@ -10,11 +10,12 @@
 #include <include/controller/RobotControllerFactory.h>
 
 class RobotManager {
-
-    std::vector<RobotController> _controllers;
+private:
+    std::vector<std::pair<std::unique_ptr<RobotController>, Controller_type>> _controllers;
 
 public:
-    void add(const RobotController&, Controller_type);
+    void add(std::unique_ptr<RobotController> robot_controller, Controller_type);
+    void run();
 };
 
 

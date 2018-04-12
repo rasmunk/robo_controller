@@ -1,5 +1,3 @@
-#include <vector>
-#include <opencv2/opencv.hpp>
 #include <include/video/VideoAnalyser.h>
 #include <include/detector/DetectorFactory.h>
 #include <include/manager/RobotManager.h>
@@ -15,12 +13,7 @@ using namespace std;
 
 int main(int argc, char** argv )
 {
-    Controller_type robo_type = ThymioObstacleAvoidance;
-//    std::vector<std::unique_ptr<RobotController>> controllers;
- //   std::vector<std::unique_ptr<QThread>> q_threads;
-//    int num_robots = 200;
- //   int base_port = 33333;
-
+    Controller_type controller_type = ThymioObstacleAvoidance;
 
     RobotConfig robot_config;
     robot_config.set("ip", "127.0.0.1");
@@ -30,34 +23,12 @@ int main(int argc, char** argv )
     // Launch the shared frame structure and the Detector factory
     RobotControllerFactory robot_controller_factory;
     //auto robot_controller = robot_controller_factory.make_shared_robot_controller(Thymio);
-    auto robot_controller = robot_controller_factory.make_unique_robot_controller(robo_type, robot_config);
-    //controllers.emplace_back(robot_controller_factory.make_unique_robot_controller(robo_type,
-    //                                                                              robot_config));
+    auto robot_controller = robot_controller_factory.make_unique_robot_controller(controller_type,
+                                                          robot_config);
 
-    RobotManager robotManager;
-    robotManager.register(robot_controller, robo_type);
-    robotManager.run();
-
-
-
-    /*vector<unique_ptr<RobotController> controllers;
-    vector<unique_ptr<QThread>> q_threads;
-
-    // Initialize
-    for (const auto& port : ports) {
-        controllers.emplace_back(make_unique<TestController>(ip, port, aesl));
-        controllers.back()->run();
-        // store new thread and move the latest controller into it
-        q_threads.emplace_back(make_unique<QThread>());
-        controllers.back()->moveToThread(q_threads.back().get());
-    }
-
-    // Fire them up
-    for (auto& q_thread : q_threads) {
-        QTimer::singleShot(300000, q_thread.get(), SLOT(quit()));
-        q_thread->start();
-    }*/
-
+    RobotManager roboManager;
+    roboManager.add(robot_controller, controller_type);
+    roboManager.run();
 
     /*SimulationServiceImpl simulationService;
     simulationService.sink(robot_controller);
