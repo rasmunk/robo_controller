@@ -4,6 +4,7 @@
 #ifndef EMERGENT_ROBOT_ROBOTCONTROLLERFACTORY_H
 #define EMERGENT_ROBOT_ROBOTCONTROLLERFACTORY_H
 #include <memory>
+#include <include/config/RobotConfig.h>
 #include <include/controller/RobotController.h>
 
 enum Controller_type {ThymioBasic, ThymioEmergent, ThymioObstacleAvoidance};

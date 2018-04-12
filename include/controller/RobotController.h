@@ -4,7 +4,7 @@
 
 #ifndef EMERGENT_ROBOT_ROBOTCONTROLLER_H
 #define EMERGENT_ROBOT_ROBOTCONTROLLER_H
-#include <include/config/RobotConfig.h>
+
 #include <include/configuration/RobotConfiguration.h>
 
 class RobotController  {

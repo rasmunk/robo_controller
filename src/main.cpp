@@ -2,16 +2,13 @@
 #include <opencv2/opencv.hpp>
 #include <include/video/VideoAnalyser.h>
 #include <include/detector/DetectorFactory.h>
+#include <include/manager/RobotManager.h>
 #include <include/SharedFrame.h>
 #include <include/video/VideoHandler.h>
 #include <include/configuration/RobotConfiguration.h>
 #include <include/controller/RobotControllerFactory.h>
 #include <include/network/SimulationServiceImpl.h>
 #include <include/network/RobotServer.h>
-#include <QCoreApplication>
-#include <QThread>
-#include <QTimer>
-#include <include/controller/ThymioOAController.h>
 
 using namespace cv;
 using namespace std;
@@ -19,47 +16,29 @@ using namespace std;
 int main(int argc, char** argv )
 {
     Controller_type robo_type = ThymioObstacleAvoidance;
-    std::vector<std::unique_ptr<RobotController>> controllers;
-    std::vector<std::unique_ptr<QThread>> q_threads;
-    int num_robots = 200;
-    int base_port = 33333;
-    QCoreApplication app(argc, argv);
-
-    for (int i = 0; i < num_robots; ++i) {
-        RobotConfig robot_config;
-        robot_config.set("ip", "127.0.0.1");
-        robot_config.set("port", to_string(base_port));
-        robot_config.set("aesl_file", "../res/config/OAThymio.aesl");
-        base_port++;
-
-        // Launch the shared frame structure and the Detector factory
-        RobotControllerFactory robot_controller_factory;
-        //auto robot_controller = robot_controller_factory.make_shared_robot_controller(Thymio);
-        controllers.emplace_back(robot_controller_factory.make_unique_robot_controller(robo_type,
-                                                                                      robot_config));
+//    std::vector<std::unique_ptr<RobotController>> controllers;
+ //   std::vector<std::unique_ptr<QThread>> q_threads;
+//    int num_robots = 200;
+ //   int base_port = 33333;
 
 
-/*    RoboManager roboManager;
-    roboManager.register(robot_controller);
-    roboManager.run();
-    roboManager.stop();
-*/
+    RobotConfig robot_config;
+    robot_config.set("ip", "127.0.0.1");
+    robot_config.set("port", "33333");
+    robot_config.set("aesl_file", "../res/config/OAThymio.aesl");
 
-        if (robo_type == ThymioObstacleAvoidance) {
-            auto thymioController = dynamic_cast<ThymioOAController*>(controllers.back().get());
-            thymioController->start();
-            q_threads.emplace_back(make_unique<QThread>());
-            thymioController->moveToThread(q_threads.back().get());
-        }
-    }
+    // Launch the shared frame structure and the Detector factory
+    RobotControllerFactory robot_controller_factory;
+    //auto robot_controller = robot_controller_factory.make_shared_robot_controller(Thymio);
+    auto robot_controller = robot_controller_factory.make_unique_robot_controller(robo_type, robot_config);
+    //controllers.emplace_back(robot_controller_factory.make_unique_robot_controller(robo_type,
+    //                                                                              robot_config));
 
-    for (auto& thread : q_threads) {
-        QTimer::singleShot(300000, thread.get(), SLOT(quit()));
-        q_threads.back()->start();
-        thread->start();
-    }
+    RobotManager robotManager;
+    robotManager.register(robot_controller, robo_type);
+    robotManager.run();
 
-    return app.exec();
+
 
     /*vector<unique_ptr<RobotController> controllers;
     vector<unique_ptr<QThread>> q_threads;
