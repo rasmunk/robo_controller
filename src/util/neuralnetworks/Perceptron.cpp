@@ -13,8 +13,7 @@ using namespace Neural;
 
 /* --------------------- Perceptron --------------------- */
 
-Perceptron::Perceptron(std::vector<double>& weights, unsigned int nbInputs,
-    unsigned int nbOutputs)
+Perceptron::Perceptron(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs)
     : MLP(weights, nbInputs, nbOutputs, false)
 {
     _nbNeuronsPerLayer = std::vector<unsigned int>(2);
@@ -33,10 +32,7 @@ Perceptron::~Perceptron()
     // ...
 }
 
-std::string Perceptron::toString() const
-{
-    return LayeredNeuralNetwork::toString();
-}
+std::string Perceptron::toString() const { return LayeredNeuralNetwork::toString(); }
 
 void Perceptron::step() { MLP::step(); }
 

@@ -35,8 +35,8 @@ protected:
     bool _allowOutputToReservoirConnections;
 
     /**
-   * @return the number of neurons
-   */
+     * @return the number of neurons
+     */
     size_t getNbNeurons();
 
 public:
@@ -45,16 +45,11 @@ public:
     virtual ~ReservoirNeuralNetwork();
 
     ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs, unsigned int reservoirSize,
-        double inputToReservoirWeightRange,
-        double inputToOutputWeightRange,
-        double reservoirToOutputWeightRange,
-        double outputToReservoirWeightRange,
-        double outputToOutputWeightRange,
-        bool allowInputToOutputDirectConnections,
-        bool allowOutputSelfRecurrentConnections,
-        bool allowInputToReservoirConnections,
-        bool allowOutputToReservoirConnections);
+        unsigned int nbOutputs, unsigned int reservoirSize, double inputToReservoirWeightRange,
+        double inputToOutputWeightRange, double reservoirToOutputWeightRange,
+        double outputToReservoirWeightRange, double outputToOutputWeightRange,
+        bool allowInputToOutputDirectConnections, bool allowOutputSelfRecurrentConnections,
+        bool allowInputToReservoirConnections, bool allowOutputToReservoirConnections);
 
     ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
         unsigned int nbOutputs, unsigned int reservoirSize);
@@ -65,40 +60,40 @@ public:
     // -+-+-  Accessors/Mutators  -+-+- //
 
     /**
-   * Accessor for reservoirSize
-   */
+     * Accessor for reservoirSize
+     */
     unsigned int getReservoirSize() const;
 
     /**
-   * Accessor for allowInputToOutputDirectConnections
-   */
+     * Accessor for allowInputToOutputDirectConnections
+     */
     bool areInputToOutputDirectConnectionsAllowed() const;
 
     /**
-   * Accessor for allowOutputSelfRecurrentConnections
-   */
+     * Accessor for allowOutputSelfRecurrentConnections
+     */
     bool areOutputSelfRecurrentConnectionsAllowed() const;
 
     /**
-   * Accessor for allowInputToReservoirConnections
-   */
+     * Accessor for allowInputToReservoirConnections
+     */
     bool areInputToReservoirConnectionsAllowed() const;
 
     /**
-   * Accessor for allowOutputToReservoirConnections
-   */
+     * Accessor for allowOutputToReservoirConnections
+     */
     bool areOutputToReservoirConnectionsAllowed() const;
 
     // -+-+-  Main Methods  -+-+- //
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual ReservoirNeuralNetwork* clone() const = 0;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual std::string toString() const;
 };
 

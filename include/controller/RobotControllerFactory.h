@@ -3,12 +3,11 @@
 //
 #ifndef EMERGENT_ROBOT_ROBOTCONTROLLERFACTORY_H
 #define EMERGENT_ROBOT_ROBOTCONTROLLERFACTORY_H
+
 #include <include/controller/RobotController.h>
 #include <memory>
 
-enum Controller_type { ThymioBasic,
-    ThymioEmergent,
-    ThymioObstacleAvoidance };
+enum Controller_type { ThymioBasic, ThymioEmergent, ThymioObstacleAvoidance };
 
 class RobotControllerFactory {
 public:

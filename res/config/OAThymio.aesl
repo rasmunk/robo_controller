@@ -3,6 +3,7 @@
 
 
 <!--list of global events-->
+<event size="0" name="Stop"/>
 <event size="0" name="Forward"/>
 <event size="0" name="Reverse"/>
 <event size="0" name="RotateLeft"/>
@@ -25,6 +26,10 @@
     var rand_storage ## Variable used to store the random number of the math.rand(rand_storage) function
     var rotational_speed = 100 ## speed assigned when a robot has to rotate
     var edge_counter = 0 ## edge counter, used to track how long the robot should turn when it is at an edge
+
+    onevent Stop
+        motor.left.target = 0
+        motor.right.target = 0
 
     onevent prox
         if (avoiding != 0) then

@@ -21,15 +21,14 @@ namespace Neural {
 class Perceptron : public MLP {
 protected:
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual unsigned int computeRequiredNumberOfWeights();
 
 public:
     // -+-+-  Constructors/Destructors  -+-+- //
 
-    Perceptron(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs);
+    Perceptron(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs);
     /** Deep Copy constructor */
     Perceptron(Perceptron const& other);
     virtual ~Perceptron();
@@ -37,23 +36,23 @@ public:
     // -+-+-  Main Methods  -+-+- //
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual Perceptron* clone() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual std::string toString() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual void step();
 
     /**
-   * Return a string identifying this class
-   */
+     * Return a string identifying this class
+     */
     static std::string getNNTypeName();
 };
 

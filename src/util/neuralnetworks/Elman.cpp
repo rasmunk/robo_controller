@@ -13,17 +13,14 @@ using namespace Neural;
 
 /* --------------------- Elman --------------------- */
 
-Elman::Elman(std::vector<double>& weights, unsigned int nbInputs,
-    unsigned int nbOutputs, bool activeBiais,
-    bool onlyUseBiaisForFirstHiddenLayer, double biaisValue)
-    : MLP(weights, nbInputs, nbOutputs, activeBiais,
-          onlyUseBiaisForFirstHiddenLayer, biaisValue)
+Elman::Elman(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
+    bool activeBiais, bool onlyUseBiaisForFirstHiddenLayer, double biaisValue)
+    : MLP(weights, nbInputs, nbOutputs, activeBiais, onlyUseBiaisForFirstHiddenLayer, biaisValue)
 {
     initLastOutputs();
 }
 
-Elman::Elman(std::vector<double>& weights, unsigned int nbInputs,
-    unsigned int nbOutputs,
+Elman::Elman(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
     std::vector<unsigned int>& nbNeuronsPerLayer, bool activeBiais,
     bool onlyUseBiaisForFirstHiddenLayer, double biaisValue)
     : MLP(weights, nbInputs, nbOutputs, nbNeuronsPerLayer, activeBiais,
@@ -43,10 +40,7 @@ Elman::~Elman()
     // ...
 }
 
-std::vector<std::vector<double>> const& Elman::getLastOutputs() const
-{
-    return _lastOutputs;
-}
+std::vector<std::vector<double>> const& Elman::getLastOutputs() const { return _lastOutputs; }
 
 std::string Elman::toString() const
 {
@@ -92,19 +86,15 @@ void Elman::step()
 
     // Verify that the number of layers is correct
     if (_nbNeuronsPerLayer.size() < 2)
-        throw NeuralNetworkException(
-            "MLP must have at least 2 layers : input and output");
+        throw NeuralNetworkException("MLP must have at least 2 layers : input and output");
     if (_nbNeuronsPerLayer[0] != _inputs.size())
-        throw NeuralNetworkException(
-            "nbNeuronsPerLayer has an incorrect number of "
-            "inputs neurons (first layer)");
+        throw NeuralNetworkException("nbNeuronsPerLayer has an incorrect number of "
+                                     "inputs neurons (first layer)");
     if (_nbNeuronsPerLayer[_nbNeuronsPerLayer.size() - 1] == 0)
-        throw NeuralNetworkException(
-            "nbNeuronsPerLayer has an incorrect number of "
-            "output neurons (output layer)");
+        throw NeuralNetworkException("nbNeuronsPerLayer has an incorrect number of "
+                                     "output neurons (output layer)");
     if (_nbNeuronsPerLayer.size() != _lastOutputs.size() + 2)
-        throw NeuralNetworkException(
-            "lastOutputs has an incorrect number of entries");
+        throw NeuralNetworkException("lastOutputs has an incorrect number of entries");
 
     unsigned int nbBiais = 0;
     if (_activeBiais)

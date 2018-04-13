@@ -51,16 +51,15 @@ protected:
     bool _haveWeightsChanged;
 
     /**
-   * Return the required number of weight of a neural network
-   */
+     * Return the required number of weight of a neural network
+     */
     virtual unsigned int computeRequiredNumberOfWeights() = 0;
 
 public:
     // -+-+-  Constructors/Destructors  -+-+- //
 
     virtual ~NeuralNetwork();
-    NeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs);
+    NeuralNetwork(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs);
 
     /** Deep Copy constructor */
     NeuralNetwork(NeuralNetwork const& other);
@@ -68,95 +67,95 @@ public:
     // -+-+-  Accessors/Mutators  -+-+- //
 
     /**
-   * Mutator for description
-   */
+     * Mutator for description
+     */
     virtual void setDescription(std::string description);
 
     /**
-   * Accessor for description
-   */
+     * Accessor for description
+     */
     virtual std::string getDescription() const;
 
     /**
-   * Accessor for weights
-   */
+     * Accessor for weights
+     */
     virtual std::vector<double> const& getWeigths() const;
 
     /**
-   * Mutator for weights
-   */
+     * Mutator for weights
+     */
     virtual void setWeigths(std::vector<double>& weights);
 
     virtual void setCopyWeights(std::vector<double> weights);
     /**
-   * Accessor for the input values
-   */
+     * Accessor for the input values
+     */
     virtual const std::vector<double>& getInputs() const;
 
     /**
-   * Mutator for the input values
-   */
+     * Mutator for the input values
+     */
     virtual void setInputs(std::vector<double>& inputs);
 
     /**
-   * Accessor the output values
-   */
+     * Accessor the output values
+     */
     virtual const std::vector<double>& readOut() const;
 
     /**
-   * Mutator the output values
-   */
+     * Mutator the output values
+     */
     virtual void setOutputs(std::vector<double>& outputs);
 
     /**
-   * Accessor for inputs number
-   */
+     * Accessor for inputs number
+     */
     unsigned int getNbInputs() const;
 
     /**
-   * Accessor for outputs number
-   */
+     * Accessor for outputs number
+     */
     unsigned int getNbOutputs() const;
 
     /**
-   * Accessor for requiredNumberOfWeights
-   */
+     * Accessor for requiredNumberOfWeights
+     */
     unsigned int getRequiredNumberOfWeights();
 
     // -+-+-  Main Methods  -+-+- //
 
     /**
-   * Clone method
-   * @return a clone of this object
-   */
+     * Clone method
+     * @return a clone of this object
+     */
     virtual NeuralNetwork* clone() const = 0;
 
     /**
-   * Pretty printer
-   * @return pretty print of a description of the object
-   */
+     * Pretty printer
+     * @return pretty print of a description of the object
+     */
     virtual std::string toString() const;
 
     /**
-   * Print infos (just call the pretty printer)
-   */
+     * Print infos (just call the pretty printer)
+     */
     void displayInfo() const;
 
     /**
-   * Write log in a log file
-   */
+     * Write log in a log file
+     */
     virtual void writeLog() const;
 
     /**
-   * Do all neural computations
-   */
+     * Do all neural computations
+     */
     virtual void step() = 0;
 
     // -+-+-  Operators Overloads  -+-+- //
 
     /**
-   * Pretty printer friend
-   */
+     * Pretty printer friend
+     */
     friend std::ostream& operator<<(std::ostream& os, NeuralNetwork const& p);
 };
 

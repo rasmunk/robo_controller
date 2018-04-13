@@ -18,15 +18,12 @@ ReservoirNeuralNetwork::~ReservoirNeuralNetwork()
     // ...
 }
 
-ReservoirNeuralNetwork::ReservoirNeuralNetwork(
-    std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
-    unsigned int reservoirSize, double inputToReservoirWeightRange,
+ReservoirNeuralNetwork::ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+    unsigned int nbOutputs, unsigned int reservoirSize, double inputToReservoirWeightRange,
     double inputToOutputWeightRange, double reservoirToOutputWeightRange,
     double outputToReservoirWeightRange, double outputToOutputWeightRange,
-    bool allowInputToOutputDirectConnections,
-    bool allowOutputSelfRecurrentConnections,
-    bool allowInputToReservoirConnections,
-    bool allowOutputToReservoirConnections)
+    bool allowInputToOutputDirectConnections, bool allowOutputSelfRecurrentConnections,
+    bool allowInputToReservoirConnections, bool allowOutputToReservoirConnections)
     : NeuralNetwork(weights, nbInputs, nbOutputs)
     , _reservoirSize(reservoirSize)
     , _inputToReservoirWeightRange(inputToReservoirWeightRange)
@@ -43,10 +40,8 @@ ReservoirNeuralNetwork::ReservoirNeuralNetwork(
         throw "reservoirSize cannot be 0";
 }
 
-ReservoirNeuralNetwork::ReservoirNeuralNetwork(std::vector<double>& weights,
-    unsigned int nbInputs,
-    unsigned int nbOutputs,
-    unsigned int reservoirSize)
+ReservoirNeuralNetwork::ReservoirNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+    unsigned int nbOutputs, unsigned int reservoirSize)
     : NeuralNetwork(weights, nbInputs, nbOutputs)
     , _reservoirSize(reservoirSize)
     , _inputToReservoirWeightRange(1.0)
@@ -63,8 +58,7 @@ ReservoirNeuralNetwork::ReservoirNeuralNetwork(std::vector<double>& weights,
         throw "reservoirSize cannot be 0";
 }
 
-ReservoirNeuralNetwork::ReservoirNeuralNetwork(
-    ReservoirNeuralNetwork const& other)
+ReservoirNeuralNetwork::ReservoirNeuralNetwork(ReservoirNeuralNetwork const& other)
     : NeuralNetwork(other)
 {
     _reservoirSize = other._reservoirSize;
@@ -81,20 +75,11 @@ ReservoirNeuralNetwork::ReservoirNeuralNetwork(
     _outputToOutputWeightRange = other._outputToOutputWeightRange;
 }
 
-unsigned int ReservoirNeuralNetwork::getReservoirSize() const
-{
-    return _reservoirSize;
-}
+unsigned int ReservoirNeuralNetwork::getReservoirSize() const { return _reservoirSize; }
 
-std::string ReservoirNeuralNetwork::toString() const
-{
-    return NeuralNetwork::toString();
-}
+std::string ReservoirNeuralNetwork::toString() const { return NeuralNetwork::toString(); }
 
-size_t ReservoirNeuralNetwork::getNbNeurons()
-{
-    return _nbInputs + _nbOutputs + _reservoirSize;
-}
+size_t ReservoirNeuralNetwork::getNbNeurons() { return _nbInputs + _nbOutputs + _reservoirSize; }
 
 bool ReservoirNeuralNetwork::areInputToOutputDirectConnectionsAllowed() const
 {

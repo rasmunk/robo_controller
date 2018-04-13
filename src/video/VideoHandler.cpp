@@ -63,8 +63,7 @@ void VideoHandler::capture()
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
-    auto finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                      .count();
+    auto finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     double fps = 0.0;
 
     while ((*_keep_running).test_and_set()) {
@@ -77,8 +76,7 @@ void VideoHandler::capture()
             break;
         }
         end = std::chrono::high_resolution_clock::now();
-        finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                     .count();
+        finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if (finish > 0) {
             fps = 1000 / finish;
             // cout << "Capture fps: " << fps << "\n";

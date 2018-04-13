@@ -18,8 +18,8 @@ NeuralNetwork::~NeuralNetwork()
     // ...
 }
 
-NeuralNetwork::NeuralNetwork(std::vector<double>& weights,
-    unsigned int nbInputs, unsigned int nbOutputs)
+NeuralNetwork::NeuralNetwork(
+    std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs)
     : _weights(weights)
     , _nbInputs(nbInputs)
     , _nbOutputs(nbOutputs)
@@ -45,10 +45,7 @@ NeuralNetwork::NeuralNetwork(NeuralNetwork const& other)
     _haveWeightsChanged = other._haveWeightsChanged;
 }
 
-void NeuralNetwork::setDescription(std::string description)
-{
-    _description = description;
-}
+void NeuralNetwork::setDescription(std::string description) { _description = description; }
 
 std::string NeuralNetwork::getDescription() const { return _description; }
 
@@ -64,10 +61,7 @@ void NeuralNetwork::setCopyWeights(std::vector<double> weights)
     _haveWeightsChanged = true;
 }
 
-std::vector<double> const& NeuralNetwork::getWeigths() const
-{
-    return _weights;
-}
+std::vector<double> const& NeuralNetwork::getWeigths() const { return _weights; }
 
 const std::vector<double>& NeuralNetwork::getInputs() const { return _inputs; }
 
@@ -87,10 +81,7 @@ void NeuralNetwork::setOutputs(std::vector<double>& outputs)
 
 std::string NeuralNetwork::toString() const { return _description; }
 
-std::ostream& operator<<(std::ostream& os, NeuralNetwork const& p)
-{
-    return os << p.toString();
-}
+std::ostream& operator<<(std::ostream& os, NeuralNetwork const& p) { return os << p.toString(); }
 
 void NeuralNetwork::displayInfo() const { std::cout << toString(); }
 

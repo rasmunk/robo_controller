@@ -24,25 +24,24 @@ protected:
     std::vector<std::vector<double>> _lastOutputs;
 
     /**
-   * Initialize lastOutputs
-   */
+     * Initialize lastOutputs
+     */
     void initLastOutputs();
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual unsigned int computeRequiredNumberOfWeights();
 
 public:
     // -+-+-  Constructors/Destructors  -+-+- //
 
-    Elman(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs, bool activeBiais = false,
-        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
-    Elman(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs, std::vector<unsigned int>& nbNeuronsPerLayer,
+    Elman(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
         bool activeBiais = false, bool onlyUseBiaisForFirstHiddenLayer = false,
         double biaisValue = 1.0);
+    Elman(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
+        std::vector<unsigned int>& nbNeuronsPerLayer, bool activeBiais = false,
+        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
     /** Deep Copy constructor */
     Elman(Elman const& other);
     virtual ~Elman();
@@ -55,23 +54,23 @@ public:
     // -+-+-  Main Methods  -+-+- //
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual Elman* clone() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual std::string toString() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual void step();
 
     /**
-   * Return a string identifying this class
-   */
+     * Return a string identifying this class
+     */
     static std::string getNNTypeName();
 };
 

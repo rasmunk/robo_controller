@@ -20,23 +20,21 @@ namespace Neural {
 class MLP : public LayeredNeuralNetwork {
 protected:
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual unsigned int computeRequiredNumberOfWeights();
 
 public:
     // -+-+-  Constructors/Destructors  -+-+- //
 
-    MLP(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs, bool activeBiais = false,
-        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
-    MLP(unsigned int nbInputs, unsigned int nbOutputs, bool activeBiais = false,
-        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
-    MLP(std::vector<double>& weights, unsigned int nbInputs,
-        unsigned int nbOutputs,
-        std::vector<unsigned int>& nbNeuronsPerHiddenLayer,
+    MLP(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
         bool activeBiais = false, bool onlyUseBiaisForFirstHiddenLayer = false,
         double biaisValue = 1.0);
+    MLP(unsigned int nbInputs, unsigned int nbOutputs, bool activeBiais = false,
+        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
+    MLP(std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
+        std::vector<unsigned int>& nbNeuronsPerHiddenLayer, bool activeBiais = false,
+        bool onlyUseBiaisForFirstHiddenLayer = false, double biaisValue = 1.0);
     /** Deep Copy constructor */
     MLP(MLP const& other);
     virtual ~MLP();
@@ -44,23 +42,23 @@ public:
     // -+-+-  Main Methods  -+-+- //
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual MLP* clone() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual std::string toString() const;
 
     /**
-   * {@InheritDoc}
-   */
+     * {@InheritDoc}
+     */
     virtual void step();
 
     /**
-   * Return a string identifying this class
-   */
+     * Return a string identifying this class
+     */
     static std::string getNNTypeName();
 };
 

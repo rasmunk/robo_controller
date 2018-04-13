@@ -11,10 +11,10 @@ private:
     std::string reference_image_path;
     cv::Mat reference_mat;
     cv::Ptr<cv::ORB> orb;
-    std::vector<cv::KeyPoint>
-        kpts1; // Keypoints that describe the object to be found
+    std::vector<cv::KeyPoint> kpts1; // Keypoints that describe the object to be found
     cv::Mat desc1; // Descriptor Matrix of the object to be found
-    const float inlier_threshold = 4.0f; // Distance threshold to identify inliers of a detected match
+    const float inlier_threshold
+        = 4.0f; // Distance threshold to identify inliers of a detected match
     const float nn_match_ratio = 0.70f; // Nearest neighbor matching ratio for
     void initialize();
 

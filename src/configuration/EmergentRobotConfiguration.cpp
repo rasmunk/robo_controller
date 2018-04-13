@@ -6,10 +6,8 @@
 
 using namespace std;
 
-EmergentRobotConfiguration::EmergentRobotConfiguration(unsigned int num_inputs,
-    unsigned int num_hidden,
-    unsigned int num_outputs,
-    bool active_bias)
+EmergentRobotConfiguration::EmergentRobotConfiguration(
+    unsigned int num_inputs, unsigned int num_hidden, unsigned int num_outputs, bool active_bias)
 {
     vector<unsigned int> hidden_layer;
     vector<double> weights;
@@ -22,16 +20,15 @@ EmergentRobotConfiguration::EmergentRobotConfiguration(unsigned int num_inputs,
     for (int i = 0; i < _genome->nn_weights_size(); ++i) {
         weights.push_back(_genome->nn_weights(i));
     }
-    _mlp = make_unique<Neural::MLP>(weights, _num_inputs, _num_outputs,
-        hidden_layer, _active_bias, true);
+    _mlp = make_unique<Neural::MLP>(
+        weights, _num_inputs, _num_outputs, hidden_layer, _active_bias, true);
 }
 
 void EmergentRobotConfiguration::initialize() {}
 
 void EmergentRobotConfiguration::update() {}
 
-const vector<double>& EmergentRobotConfiguration::get_activations(
-    vector<double>& input) const
+const vector<double>& EmergentRobotConfiguration::get_activations(vector<double>& input) const
 {
     _mlp->setInputs(input);
     _mlp->step();

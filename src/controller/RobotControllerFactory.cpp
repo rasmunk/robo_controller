@@ -8,8 +8,7 @@
 
 using namespace std;
 
-unique_ptr<RobotController>
-RobotControllerFactory::make_unique_robot_controller(
+unique_ptr<RobotController> RobotControllerFactory::make_unique_robot_controller(
     Controller_type controller_type, const RobotConfig& robot_config)
 {
     unique_ptr<RobotController> robot_controller;
@@ -30,8 +29,7 @@ RobotControllerFactory::make_unique_robot_controller(
     return robot_controller;
 }
 
-shared_ptr<RobotController>
-RobotControllerFactory::make_shared_robot_controller(
+shared_ptr<RobotController> RobotControllerFactory::make_shared_robot_controller(
     Controller_type controller_type, const RobotConfig& robot_config)
 {
     shared_ptr<RobotController> robot_controller;

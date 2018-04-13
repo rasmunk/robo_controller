@@ -11,8 +11,7 @@
 
 class SimulationServiceImpl final : public network::Simulation::Service {
 public:
-    grpc::Status SetGenome(grpc::ServerContext*, const network::Genome*,
-        network::Empty*) override;
+    grpc::Status SetGenome(grpc::ServerContext*, const network::Genome*, network::Empty*) override;
 
     void sink(std::shared_ptr<RobotController>);
 

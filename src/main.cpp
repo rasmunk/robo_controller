@@ -14,22 +14,31 @@ using namespace std;
 int main(int argc, char** argv)
 {
     Controller_type controller_type = ThymioObstacleAvoidance;
+    vector<shared_ptr<RobotController>> controllers;
 
-    RobotConfig robot_config;
-    robot_config.set("ip", "127.0.0.1");
-    robot_config.set("port", "33333");
-    robot_config.set("aesl_file", "../res/config/OAThymio.aesl");
-
-    // Launch the shared frame structure and the Detector factory
+    int num_robots = 1;
+    int base_port = 33333;
     RobotControllerFactory robot_controller_factory;
-    // auto robot_controller =
-    // robot_controller_factory.make_shared_robot_controller(Thymio);
-    auto robot_controller = robot_controller_factory.make_shared_robot_controller(
-        controller_type, robot_config);
+    for (int i = 0; i < num_robots; ++i) {
+        RobotConfig robot_config;
+        robot_config.set("ip", "127.0.0.1");
+        robot_config.set("port", to_string(base_port));
+        robot_config.set("aesl_file", "../res/config/OAThymio.aesl");
+        base_port++;
+
+        auto robot_controller
+            = robot_controller_factory.make_shared_robot_controller(controller_type, robot_config);
+        controllers.push_back(robot_controller);
+    }
 
     RobotManager roboManager;
-    roboManager.add(robot_controller, controller_type);
+    for (const auto& controller : controllers) {
+        roboManager.add(controller, controller_type);
+    }
+
     roboManager.run();
+    this_thread::sleep_for(20s);
+    roboManager.stop();
 
     /*SimulationServiceImpl simulationService;
 simulationService.sink(robot_controller);

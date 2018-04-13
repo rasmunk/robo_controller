@@ -19,8 +19,7 @@ using namespace ENU;
 
 ThymioController::ThymioController(const RobotConfig& robotConfig)
 {
-    _aseba_interface = make_unique<AsebaInterface>(
-        QString::fromStdString(robotConfig.get("ip")),
+    _aseba_interface = make_unique<AsebaInterface>(QString::fromStdString(robotConfig.get("ip")),
         QString::fromStdString(robotConfig.get("port")));
     if (_aseba_interface == nullptr) {
         throw runtime_error{ "Failed to initialize the Aseba Interface connection" };
@@ -29,8 +28,8 @@ ThymioController::ThymioController(const RobotConfig& robotConfig)
     _aseba_interface->sink(move(aesl_program));
 
     connect(_aseba_interface.get(), SIGNAL(configured()), this, SLOT(setup()));
-    connect(_aseba_interface.get(), SIGNAL(incommingUserMessage(const Message&)),
-        this, SLOT(process_messages(const Message&)));
+    connect(_aseba_interface.get(), SIGNAL(incommingUserMessage(const Message&)), this,
+        SLOT(process_messages(const Message&)));
 }
 
 // defines behaviour -> setup _actions callbacks
@@ -52,8 +51,7 @@ void ThymioController::process_messages(const Message& message)
     }
 }
 
-void ThymioController::set_shared_detector(
-    shared_ptr<Detector> shared_detector)
+void ThymioController::set_shared_detector(shared_ptr<Detector> shared_detector)
 {
     _shared_detector = shared_detector;
 }

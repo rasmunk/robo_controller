@@ -54,8 +54,7 @@ void VideoAnalyser::analyse()
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
-    auto finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                      .count();
+    auto finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     // 1 frame since last call
     double time_analysing = 0.0;
 
@@ -74,8 +73,7 @@ void VideoAnalyser::analyse()
             //_video_writer.write(flipped_mat);
             found = _shared_detector->find(flipped_mat);
             end = std::chrono::high_resolution_clock::now();
-            finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                         .count();
+            finish = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             if (finish > 0) {
                 time_analysing = 1000 / finish;
                 cout << "Time to analyze: " << time_analysing << "\n";

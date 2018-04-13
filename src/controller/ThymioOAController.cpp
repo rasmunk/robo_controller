@@ -42,10 +42,7 @@ void ThymioOAController::obstacle_detected()
     _aseba_interface->sendEvent("Forward");
 }
 
-void ThymioOAController::see_nothing()
-{
-    _aseba_interface->sendEvent("Forward");
-}
+void ThymioOAController::see_nothing() { _aseba_interface->sendEvent("Forward"); }
 
 // TODO -> implement
 void ThymioOAController::falling() {}

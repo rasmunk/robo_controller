@@ -22,11 +22,11 @@ private:
     bool initialise(const cv::Size&);
 
 public:
-    VideoAnalyser(VideoAnalyser&&) = default; // request automatic generated move constructor ->
-        // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
+    VideoAnalyser(VideoAnalyser&&)
+        = default; // request automatic generated move constructor ->
+                   // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
     VideoAnalyser(std::shared_ptr<Detector> shared_detector,
-        std::shared_ptr<FrameStructure> shared_frames,
-        const cv::Size& frame_size)
+        std::shared_ptr<FrameStructure> shared_frames, const cv::Size& frame_size)
         : _shared_detector(shared_detector)
         , _shared_frames(shared_frames)
     {

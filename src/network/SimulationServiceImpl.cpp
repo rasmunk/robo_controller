@@ -9,9 +9,8 @@ using grpc::ServerContext;
 using grpc::Status;
 using network::Genome;
 
-Status SimulationServiceImpl::SetGenome(ServerContext* context,
-    const network::Genome* genome,
-    network::Empty* response)
+Status SimulationServiceImpl::SetGenome(
+    ServerContext* context, const network::Genome* genome, network::Empty* response)
 {
     /*auto configuration =
 _robot_controller->get_configuration_of_type(Emergent);
@@ -24,8 +23,7 @@ _robot_controller->update_configuration(configuration);*/
     return Status::OK;
 }
 
-void SimulationServiceImpl::sink(
-    std::shared_ptr<RobotController> robot_controller)
+void SimulationServiceImpl::sink(std::shared_ptr<RobotController> robot_controller)
 {
     _robot_controller = robot_controller;
 }

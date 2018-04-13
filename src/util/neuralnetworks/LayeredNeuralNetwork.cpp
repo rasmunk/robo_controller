@@ -18,9 +18,9 @@ LayeredNeuralNetwork::~LayeredNeuralNetwork()
     // ...
 }
 
-LayeredNeuralNetwork::LayeredNeuralNetwork(
-    std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
-    bool activeBiais, bool onlyUseBiaisForFirstHiddenLayer, double biaisValue)
+LayeredNeuralNetwork::LayeredNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+    unsigned int nbOutputs, bool activeBiais, bool onlyUseBiaisForFirstHiddenLayer,
+    double biaisValue)
     : NeuralNetwork(weights, nbInputs, nbOutputs)
     , _activeBiais(activeBiais)
     , _onlyUseBiaisForFirstHiddenLayer(onlyUseBiaisForFirstHiddenLayer)
@@ -31,8 +31,8 @@ LayeredNeuralNetwork::LayeredNeuralNetwork(
     delete nbNeuronsPerHiddenLayers;
 }
 
-LayeredNeuralNetwork::LayeredNeuralNetwork(
-    std::vector<double>& weights, unsigned int nbInputs, unsigned int nbOutputs,
+LayeredNeuralNetwork::LayeredNeuralNetwork(std::vector<double>& weights, unsigned int nbInputs,
+    unsigned int nbOutputs,
     std::vector<unsigned int>& nbNeuronsPerHiddenLayer = *(new std::vector<unsigned int>(0)),
     bool activeBiais, bool onlyUseBiaisForFirstHiddenLayer, double biaisValue)
     : NeuralNetwork(weights, nbInputs, nbOutputs)
@@ -52,8 +52,7 @@ LayeredNeuralNetwork::LayeredNeuralNetwork(LayeredNeuralNetwork const& other)
     _biaisValue = other._biaisValue;
 }
 
-void LayeredNeuralNetwork::initNbNeuronsPerLayer(
-    std::vector<unsigned int>& nbNeuronsPerHiddenLayer)
+void LayeredNeuralNetwork::initNbNeuronsPerLayer(std::vector<unsigned int>& nbNeuronsPerHiddenLayer)
 {
     _nbNeuronsPerLayer = std::vector<unsigned int>(nbNeuronsPerHiddenLayer.size() + 2);
     _nbNeuronsPerLayer[0] = _nbInputs;

@@ -34,10 +34,7 @@ void RobotServer::launch_server()
     _server->Wait();
 }
 
-void RobotServer::start()
-{
-    _runner = thread(&RobotServer::launch_server, this);
-}
+void RobotServer::start() { _runner = thread(&RobotServer::launch_server, this); }
 
 void RobotServer::stop()
 {

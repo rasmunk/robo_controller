@@ -23,8 +23,9 @@ private:
     void quit();
 
 public:
-    VideoHandler(VideoHandler&&) = default; // request automatic generated move constructor ->
-        // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
+    VideoHandler(VideoHandler&&)
+        = default; // request automatic generated move constructor ->
+                   // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
     VideoHandler(std::unique_ptr<FrameStructure> structure);
     VideoHandler(std::shared_ptr<FrameStructure> shared_structure);
     ~VideoHandler() { this->quit(); };
