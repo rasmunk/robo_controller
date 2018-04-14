@@ -14,8 +14,10 @@
 
 class RobotManager {
 private:
+    std::vector<Controller_type> thymio_types{ThymioBasic, ThymioEmergent,
+                                              ThymioObstacleAvoidance};
+    // Pin controllers
     std::vector<std::pair<std::shared_ptr<RobotController>, Controller_type>> _controllers;
-
     // Thymio controllers require a eventloop to exchange signals with the simulator
     std::unique_ptr<QCoreApplication> _qcore_application;
     std::atomic_flag _keep_running;
@@ -23,14 +25,13 @@ private:
     std::vector<std::unique_ptr<QThread>> _q_threads;
     std::thread _manager_runner;
 
-    void run_qt();
+    void process_qt_events();
+    void stop();
 
 public:
     RobotManager();
     ~RobotManager() { this->stop(); }
-    void add(std::shared_ptr<RobotController> robot_controller, Controller_type);
-    void run();
-    void stop();
+    void run_controller(std::shared_ptr<RobotController> robot_controller, Controller_type);
 };
 
 #endif // EMERGENT_CONTROLLER_ROBOTMANAGER_H

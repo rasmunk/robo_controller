@@ -88,7 +88,7 @@ set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoHandler.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/video/VideoAnalyser.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedQueue.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} src/SharedFrame.cpp)
-set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} src/main.cpp src/network/RobotServiceImpl.cpp include/network/RobotServiceImpl.h)
 
 ## Create the executable "emergent_robot" while linking in the required library files
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

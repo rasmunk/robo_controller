@@ -12,57 +12,41 @@
 using namespace std;
 using namespace std::placeholders;
 
-RobotManager::RobotManager()
-{
-    char* argv[] = { "program name", "arg1", "arg2", NULL };
-    int argc = sizeof(argv) / sizeof(char*) - 1;
+RobotManager::RobotManager() {
+    char *argv[] = {"program name", "arg1", "arg2", NULL};
+    int argc = sizeof(argv) / sizeof(char *) - 1;
     _qcore_application = make_unique<QCoreApplication>(argc, argv);
+    // GOGOGO
+    _manager_runner = thread(&RobotManager::process_qt_events, this);
 }
 
-void RobotManager::add(
-    std::shared_ptr<RobotController> robot_controller, Controller_type controller_type)
-{
+// Executes robot
+void RobotManager::run_controller(shared_ptr<RobotController> robot_controller, Controller_type
+controller_type) {
+
     _controllers.emplace_back(make_pair(robot_controller, controller_type));
+    bool is_thymio = (std::find(thymio_types.begin(), thymio_types.end(), controller_type)
+                      != thymio_types.end());
+    if (is_thymio) {
+        auto thymio_controller = dynamic_cast<ThymioController *>(robot_controller.get());
+        _q_threads.emplace_back(make_unique<QThread>());
+        thymio_controller->moveToThread(_q_threads.back().get());
+        _q_threads.back()->start();
+    }
+
 }
 
-void RobotManager::run_qt()
-{
+void RobotManager::process_qt_events() {
     while (_keep_running.test_and_set()) {
         // Wait for new events -> process them when they are registered
         _qcore_application->processEvents(
-            QEventLoop::WaitForMoreEvents | QEventLoop::EventLoopExec);
+                QEventLoop::WaitForMoreEvents | QEventLoop::EventLoopExec);
+
     }
 }
 
-void RobotManager::run()
-{
-    std::vector<Controller_type> thymio_types{ ThymioBasic, ThymioEmergent,
-        ThymioObstacleAvoidance };
-    for (auto& controller : _controllers) {
-        bool is_thymio = (std::find(thymio_types.begin(), thymio_types.end(), controller.second)
-            != thymio_types.end());
-        if (is_thymio) {
-            auto thymioController = dynamic_cast<ThymioController*>(controller.first.get());
-            thymioController->start();
-            _q_threads.emplace_back(make_unique<QThread>());
-            thymioController->moveToThread(_q_threads.back().get());
-        }
-    }
-
-    if (!_q_threads.empty()) {
-        // Fire them up
-        for (auto& thread : _q_threads) {
-            thread->start();
-        }
-        // Process qt events in the manager_runner
-        _manager_runner = thread(&RobotManager::run_qt, this);
-    }
-}
-
-void RobotManager::stop()
-{
-    cout << "Stopping" << endl;
-    for (auto& thread : _q_threads) {
+void RobotManager::stop() {
+    for (auto &thread : _q_threads) {
         thread->quit();
     }
 
@@ -71,5 +55,4 @@ void RobotManager::stop()
     if (_manager_runner.joinable()) {
         _manager_runner.join();
     }
-    cout << "Stopped" << endl;
 }

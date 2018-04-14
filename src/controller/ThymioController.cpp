@@ -30,12 +30,13 @@ ThymioController::ThymioController(const RobotConfig& robotConfig)
     connect(_aseba_interface.get(), SIGNAL(configured()), this, SLOT(setup()));
     connect(_aseba_interface.get(), SIGNAL(incommingUserMessage(const Message&)), this,
         SLOT(process_messages(const Message&)));
+    _aseba_interface->start();
 }
 
 // defines behaviour -> setup _actions callbacks
 void ThymioController::setup() {}
 
-void ThymioController::start() { _aseba_interface->start(); }
+void ThymioController::start() {}
 
 void ThymioController::stop()
 {

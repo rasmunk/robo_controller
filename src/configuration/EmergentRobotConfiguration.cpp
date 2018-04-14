@@ -17,11 +17,11 @@ EmergentRobotConfiguration::EmergentRobotConfiguration(
     _active_bias = active_bias;
     _genome = make_unique<network::Genome>();
     hidden_layer.push_back(_num_hidden);
-    for (int i = 0; i < _genome->nn_weights_size(); ++i) {
+/*    for (int i = 0; i < _genome->nn_weights_size(); ++i) {
         weights.push_back(_genome->nn_weights(i));
     }
     _mlp = make_unique<Neural::MLP>(
-        weights, _num_inputs, _num_outputs, hidden_layer, _active_bias, true);
+        weights, _num_inputs, _num_outputs, hidden_layer, _active_bias, true);*/
 }
 
 void EmergentRobotConfiguration::initialize() {}

@@ -3,12 +3,13 @@
 //
 
 #include <include/network/RobotServer.h>
+#include <time.h>
 
 using grpc::InsecureServerCredentials;
 using grpc::ServerBuilder;
 using namespace std;
 
-RobotServer::RobotServer(const string& server_address)
+RobotServer::RobotServer(const string& server_address, grpc::Service& service)
     : _server_address(server_address)
     , _builder(make_unique<ServerBuilder>())
 {
@@ -20,13 +21,12 @@ RobotServer::RobotServer(const string& server_address)
         throw runtime_error{ "server address can't be blank" };
     }
     _builder->AddListeningPort(_server_address, InsecureServerCredentials());
-}
-
-void RobotServer::register_service(network::Simulation::Service& service)
-{
     _builder->RegisterService(&service);
+    _runner = thread(&RobotServer::launch_server, this);
 }
 
+// TODO -> state machine of incomming messages
+// TODO -> queue to forward messages to listener
 void RobotServer::launch_server()
 {
     _server = _builder->BuildAndStart();
@@ -34,17 +34,10 @@ void RobotServer::launch_server()
     _server->Wait();
 }
 
-void RobotServer::start() { _runner = thread(&RobotServer::launch_server, this); }
-
 void RobotServer::stop()
 {
     cout << "Shutting down" << endl;
     _server->Shutdown();
-}
-
-void RobotServer::quit()
-{
-    this->stop();
     if (_runner.joinable()) {
         _runner.join();
     }

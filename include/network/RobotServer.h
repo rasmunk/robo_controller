@@ -8,6 +8,7 @@
 #include <grpc++/grpc++.h>
 #include <simulation.grpc.pb.h>
 #include <thread>
+#include <include/manager/RobotManager.h>
 
 class RobotServer {
 private:
@@ -16,14 +17,11 @@ private:
     std::unique_ptr<grpc::Server> _server;
     std::string _server_address;
     void launch_server();
-    void quit();
+    void stop();
 
 public:
-    RobotServer(const std::string& server_address);
-    ~RobotServer() { this->quit(); }
-    void register_service(network::Simulation::Service& service);
-    void start();
-    void stop();
+    RobotServer(const std::string& server_address, grpc::Service&);
+    ~RobotServer() { this->stop(); }
 };
 
 #endif // EMERGENT_CONTROLLER_ROBOSERVER_H
