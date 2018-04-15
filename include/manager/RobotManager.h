@@ -11,6 +11,7 @@
 #include <include/controller/RobotControllerFactory.h>
 #include <thread>
 #include <vector>
+#include <QThreadPool>
 
 class RobotManager {
 private:

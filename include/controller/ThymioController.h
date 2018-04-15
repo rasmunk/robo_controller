@@ -26,7 +26,6 @@ protected slots:
 public:
     ThymioController(const RobotConfig&);
     ~ThymioController() { this->stop(); };
-    void start() override;
     void stop() override;
     void set_shared_detector(std::shared_ptr<Detector>);
 };

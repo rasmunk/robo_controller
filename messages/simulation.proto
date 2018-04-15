@@ -16,6 +16,12 @@ service RobotService {
 
 message Robot {
     int32 id = 1;
+    enum Controller_type {
+        ThymioBasic = 0;
+        ThymioEmergent = 1;
+        ThymioObstacleAvoidance = 2;
+    }
+    Controller_type type = 2;
 }
 
 message Response {

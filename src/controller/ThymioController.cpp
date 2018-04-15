@@ -36,8 +36,6 @@ ThymioController::ThymioController(const RobotConfig& robotConfig)
 // defines behaviour -> setup _actions callbacks
 void ThymioController::setup() {}
 
-void ThymioController::start() {}
-
 void ThymioController::stop()
 {
     _aseba_interface->sendEvent("Stop");

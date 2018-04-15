@@ -8,6 +8,7 @@
 #include <include/video/VideoAnalyser.h>
 #include <include/video/VideoHandler.h>
 #include <include/network/RobotServiceImpl.h>
+#include <future>
 
 using namespace cv;
 using namespace std;
@@ -17,7 +18,6 @@ enum Running_mode {Network, Local};
 
 int main(int argc, char** argv)
 {
-
     Running_mode running_mode = Running_mode::Network;
     Controller_type controller_type = ThymioObstacleAvoidance;
     vector<shared_ptr<RobotController>> controllers;
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         robotserver = make_unique<RobotServer>("127.0.0.1:30000", *service);
     }
 
-    this_thread::sleep_for(20s);
+    promise<void>().get_future().wait();
 
     /*
     DetectorFactory dec_factory;
