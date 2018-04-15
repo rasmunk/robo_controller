@@ -2,8 +2,8 @@
 // Created by Rasmus Munk on 14/04/2018.
 //
 
-#include "include/network/RobotServiceImpl.h"
 #include <include/controller/RobotControllerFactory.h>
+#include "include/network/RobotServiceImpl.h"
 
 using namespace std;
 

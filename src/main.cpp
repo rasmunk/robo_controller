@@ -13,12 +13,13 @@
 using namespace cv;
 using namespace std;
 
-enum Running_mode {Network, Local};
-
+enum Managed_by {NETWORK, LOCAL};
+enum Connection_type {SIMULATION, PHYSICAL};
 
 int main(int argc, char** argv)
 {
-    Running_mode running_mode = Running_mode::Network;
+    auto managed_by = Managed_by::NETWORK;
+    auto connection_type = Connection_type::SIMULATION;
     Controller_type controller_type = ThymioObstacleAvoidance;
     vector<shared_ptr<RobotController>> controllers;
 
@@ -37,13 +38,16 @@ int main(int argc, char** argv)
 
     auto robo_manager = make_shared<RobotManager>();
     for (const auto& controller : controllers) {
+        if (connection_type == SIMULATION) {
+            robo_manager->spawn_controller(*controller);
+        }
         robo_manager->run_controller(controller, controller_type);
     }
 
     // Network enabled
     unique_ptr<RobotServer> robotserver;
     unique_ptr<RobotServiceImpl> service;
-    if (running_mode == Network) {
+    if (managed_by == NETWORK) {
         service = make_unique<RobotServiceImpl>(robo_manager);
         robotserver = make_unique<RobotServer>("127.0.0.1:30000", *service);
     }

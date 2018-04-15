@@ -32,6 +32,7 @@ private:
 public:
     RobotManager();
     ~RobotManager() { this->stop(); }
+    void spawn_controller(const RobotController& controller);
     void run_controller(std::shared_ptr<RobotController> robot_controller, Controller_type);
 };
 

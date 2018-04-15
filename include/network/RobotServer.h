@@ -15,7 +15,6 @@ private:
     std::thread _runner;
     std::unique_ptr<grpc::ServerBuilder> _builder;
     std::unique_ptr<grpc::Server> _server;
-    std::string _server_address;
     void launch_server();
     void stop();
 
