@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "robo_engine.network";
+option java_outer_classname = "SimulationProto";
+option objc_class_prefix = "SP";
+
+package network;
+
+service RobotService {
+    rpc Add(Robot) returns (Response) {}
+    rpc Remove(Robot) returns (Response) {}
+    rpc Get(Robot) returns (Response) {}
+    rpc Update(Robot) returns (Response) {}
+}
+
+message Robot {
+    int32 id = 1;
+    enum Controller_type {
+        ThymioBasic = 0;
+        ThymioEmergent = 1;
+        ThymioObstacleAvoidance = 2;
+    }
+    Controller_type type = 2;
+}
+
+message Response {
+    int32 status = 1;
+}
+
+message Genome {
+    repeated float float_weights = 1;
+    repeated bool bool_weights = 2;
+    float fitness = 3;
+}
+
+message Empty {}

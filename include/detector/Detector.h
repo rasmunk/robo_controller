@@ -10,8 +10,7 @@ class Detector {
 public:
     virtual void initialize(std::string) = 0;
     virtual bool find(const cv::Mat&) = 0;
+    virtual ~Detector() = default;
 };
 
-
-
-#endif //TEST3_DETECTOR_H
+#endif // TEST3_DETECTOR_H

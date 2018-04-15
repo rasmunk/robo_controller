@@ -8,16 +8,15 @@
 #include "FrameStructure.h"
 #include <mutex>
 
-class SharedFrame : public FrameStructure
-{
+class SharedFrame : public FrameStructure {
 private:
     cv::Mat _mat;
     std::mutex _mutex;
+
 public:
     virtual void add(cv::Mat&&) override;
-    virtual size_t size() override ;
+    virtual size_t size() override;
     virtual cv::Mat pop() override;
 };
 
-
-#endif //EMERGENT_ROBOT_SHAREDFRAME_H
+#endif // EMERGENT_ROBOT_SHAREDFRAME_H

@@ -5,13 +5,12 @@
 #ifndef TEST3_VIDEOHANDLER_H
 #define TEST3_VIDEOHANDLER_H
 
-#include <opencv2/opencv.hpp>
-#include <thread>
 #include <atomic>
 #include <include/FrameStructure.h>
+#include <opencv2/opencv.hpp>
+#include <thread>
 
-class VideoHandler
-{
+class VideoHandler {
 private:
     std::unique_ptr<FrameStructure> _structure;
     std::shared_ptr<FrameStructure> _shared_structure;
@@ -22,8 +21,11 @@ private:
     void capture();
     bool initialise();
     void quit();
+
 public:
-    VideoHandler(VideoHandler &&) = default; // request automatic generated move constructor -> http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
+    VideoHandler(VideoHandler&&)
+        = default; // request automatic generated move constructor ->
+                   // http://stackoverflow.com/questions/16192865/providing-an-empty-user-defined-destructor-causes-compilation-error
     VideoHandler(std::unique_ptr<FrameStructure> structure);
     VideoHandler(std::shared_ptr<FrameStructure> shared_structure);
     ~VideoHandler() { this->quit(); };
@@ -32,5 +34,4 @@ public:
     cv::Size get_frame_size();
 };
 
-
-#endif //TEST3_VIDEOHANDLER_H
+#endif // TEST3_VIDEOHANDLER_H

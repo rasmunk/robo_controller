@@ -4,16 +4,16 @@
 
 #ifndef EMERGENT_ROBOT_ROBOTCONTROLLER_H
 #define EMERGENT_ROBOT_ROBOTCONTROLLER_H
-#include <include/detector/Detector.h>
-#include <memory>
+
+#include <include/config/RobotConfig.h>
+#include <include/configuration/RobotConfiguration.h>
 
 class RobotController {
-
+private:
 public:
-    virtual void start() = 0;
+    int id = 0;
     virtual void stop() = 0;
-    virtual void set_shared_detector(std::shared_ptr<Detector>) = 0;
-
+    virtual ~RobotController() = default;
 };
 
-#endif //EMERGENT_ROBOT_ROBOTCONTROLLER_H
+#endif // EMERGENT_ROBOT_ROBOTCONTROLLER_H

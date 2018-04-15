@@ -4,33 +4,30 @@
 
 #ifndef EMERGENT_ROBOT_THYMIOCONTROLLER_H
 #define EMERGENT_ROBOT_THYMIOCONTROLLER_H
+
+#include <asebaclient/AsebaInterface.h>
+#include <asebaclient/support/Message.h>
+#include <include/configuration/AsebaRobotConfiguration.h>
 #include <include/controller/RobotController.h>
-#include <asebaclient/dbusinterface.h>
-#include <thread>
-#include <atomic>
+#include <include/detector/Detector.h>
 
-
-class ThymioController : public RobotController {
-private:
-    std::thread _runner;
-    std::unique_ptr<std::atomic_flag> _keep_running = std::make_unique<std::atomic_flag>(true);
+class ThymioController : public QObject, public RobotController {
+    Q_OBJECT
+protected:
     std::shared_ptr<Detector> _shared_detector;
-    std::unique_ptr<Aseba::DBusInterface> _thymio_interface;
-    std::unique_ptr<QCoreApplication> _core_application;
-    const qint16 normal_speed = 300;
-    void quit();
-    void flocking();
-    void callback_avoid(const Values& event_values); // Callback function for the thymio -> has seen an obstacle
-    void callback_clear(const Values& event_values); // sees nothing -> passes the current speed
-    void callback_falling(const Values& event_values); // about to fall
-    void callback_keepalive(const Values& event_values); // Used to indicate to the robot that it should keep on running
+    std::unique_ptr<ENU::AsebaInterface> _aseba_interface;
+    std::map<std::string, std::function<void()>> _actions;
+
+protected slots:
+    // Defines behaviour -> _actions callbacks
+    virtual void setup();
+    void process_messages(const ENU::Message& message);
 
 public:
-    ThymioController() {};
-    ~ThymioController() { this->quit(); };
-    void start() override;
+    ThymioController(const RobotConfig&);
+    ~ThymioController() { this->stop(); };
     void stop() override;
-    void set_shared_detector(std::shared_ptr<Detector>) override;
- };
+    void set_shared_detector(std::shared_ptr<Detector>);
+};
 
-#endif //EMERGENT_ROBOT_THYMIOCONTROLLER_H
+#endif // EMERGENT_ROBOT_THYMIOCONTROLLER_H
