@@ -3,7 +3,8 @@
 #include <include/controller/RobotControllerFactory.h>
 #include <include/detector/DetectorFactory.h>
 #include <include/manager/RobotManager.h>
-#include <include/network/RobotServer.h>
+#include <include/network/RobotServiceClient.h>
+#include <include/network/GrpcServer.h>
 #include <include/network/SimulationServiceImpl.h>
 #include <include/video/VideoAnalyser.h>
 #include <include/video/VideoHandler.h>
@@ -36,22 +37,34 @@ int main(int argc, char** argv)
                                                                                       robot_config));
     }
 
+    // Startup
     auto robo_manager = make_shared<RobotManager>();
+    unique_ptr<RobotServiceClient> robot_service_client;
+    if (connection_type == SIMULATION) {
+        // Connect to simulator
+        robot_service_client = make_unique<RobotServiceClient>("127.0.0.1:29000");
+    }
+
     for (const auto& controller : controllers) {
         if (connection_type == SIMULATION) {
-            robo_manager->spawn_controller(*controller);
+            // Spawn controller in simulator
+            robo_manager->spawn_controller(*controller, controller_type,
+                                           *robot_service_client);
         }
         robo_manager->run_controller(controller, controller_type);
     }
 
     // Network enabled
-    unique_ptr<RobotServer> robotserver;
+    unique_ptr<GrpcServer> robotserver;
     unique_ptr<RobotServiceImpl> service;
-    if (managed_by == NETWORK) {
-        service = make_unique<RobotServiceImpl>(robo_manager);
-        robotserver = make_unique<RobotServer>("127.0.0.1:30000", *service);
+    if (managed_by == NETWORK && connection_type == SIMULATION) {
+        // sink simulation client into the robot services
+        service = make_unique<RobotServiceImpl>(robo_manager, move(robot_service_client));
+        // Listen for robotservice messages to pass on
+        robotserver = make_unique<GrpcServer>("127.0.0.1:30000", *service);
     }
 
+    // keep on running for now
     promise<void>().get_future().wait();
 
     /*

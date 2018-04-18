@@ -12,6 +12,7 @@
 #include <thread>
 #include <vector>
 #include <QThreadPool>
+#include <include/network/RobotServiceClient.h>
 
 class RobotManager {
 private:
@@ -32,7 +33,8 @@ private:
 public:
     RobotManager();
     ~RobotManager() { this->stop(); }
-    void spawn_controller(const RobotController& controller);
+    void spawn_controller(const RobotController&, Controller_type,
+                          const RobotServiceClient&);
     void run_controller(std::shared_ptr<RobotController> robot_controller, Controller_type);
 };
 

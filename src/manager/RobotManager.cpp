@@ -41,13 +41,12 @@ void RobotManager::stop() {
     }
 }
 
-void RobotManager::spawn_controller(const RobotController &controller, Controller_type
-controller_type) {
-    bool is_thymio = (std::find(thymio_types.begin(), thymio_types.end(), controller_type)
-                      != thymio_types.end());
-    if (is_thymio) {
-        auto thymio_controller = dynamic_cast<ThymioController *>(robot_controller.get());
-
+void RobotManager::spawn_controller(const RobotController& controller, Controller_type
+controller_type, const RobotServiceClient& robot_service_client) {
+    if (robot_service_client.Add(controller, controller_type)) {
+        cout << "Robot spawned" << endl;
+    } else {
+        cout << "Failed to spawn robot" << endl;
     }
 }
 

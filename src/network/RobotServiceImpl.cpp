@@ -7,9 +7,9 @@
 
 using namespace std;
 
-::grpc::Status RobotServiceImpl::Add(::grpc::ServerContext *context,
-                                     const ::network::Robot *request,
-                                     ::network::Response *response) {
+::grpc::Status RobotServiceImpl::Add(grpc::ServerContext *context,
+                                     const network::Robot *request,
+                                     network::Response *response) {
 
     RobotControllerFactory robotControllerFactory;
     RobotConfig robot_config;
@@ -21,6 +21,10 @@ using namespace std;
     auto robot_controller = robotControllerFactory.make_shared_robot_controller(
             controller_type, robot_config);
     robot_controller->id = request->id();
+
+    // Add Robot
+    _robot_manager->spawn_controller(*robot_controller, controller_type, *_robot_service_client);
+
     // TODO -> sync
     _robot_manager->run_controller(robot_controller, controller_type);
 
